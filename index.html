@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roku Channel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+            </div>
+            <div class="header-info">
+                <span class="page-indicator">• Home</span>
+                <span class="options">* for Options</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/search-normal.png" alt="Search" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/search-active.png" alt="Search" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Search</span>
+                    </li>
+                    <li class="nav-item active">
+                        <div class="nav-icon">
+                            <img src="assets/icons/home-normal.png" alt="Home" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/home-active.png" alt="Home" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Home</span>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/movies-normal.png" alt="Movies" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/movies-active.png" alt="Movies" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Movies</span>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/tvseries-normal.png" alt="TV Series" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/tvseries-active.png" alt="TV Series" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>TV Series</span>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/livetv-normal.png" alt="Live TV" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/livetv-active.png" alt="Live TV" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Live TV</span>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/premium-normal.png" alt="Premium" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/premium-active.png" alt="Premium" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Premium</span>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-icon">
+                            <img src="assets/icons/kidsandfamily-normal.png" alt="Kids & Family" class="nav-icon-img nav-icon-normal">
+                            <img src="assets/icons/kidsandfamily-active.png" alt="Kids & Family" class="nav-icon-img nav-icon-active">
+                        </div>
+                        <span>Kids & Family</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Search Page (initially hidden) -->
+                <div class="search-page" style="display: none;">
+                    <div class="search-container">
+                        <!-- Search Input Section -->
+                        <div class="search-input-section">
+                            <div class="search-input-container">
+                                <input type="text" class="search-input" placeholder="" readonly>
+                                <div class="search-cursor"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- On-Screen Keyboard -->
+                        <div class="keyboard-container">
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="a">a</button>
+                                <button class="key-btn" data-key="b">b</button>
+                                <button class="key-btn" data-key="c">c</button>
+                                <button class="key-btn" data-key="d">d</button>
+                                <button class="key-btn" data-key="e">e</button>
+                                <button class="key-btn" data-key="f">f</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="g">g</button>
+                                <button class="key-btn" data-key="h">h</button>
+                                <button class="key-btn" data-key="i">i</button>
+                                <button class="key-btn" data-key="j">j</button>
+                                <button class="key-btn" data-key="k">k</button>
+                                <button class="key-btn" data-key="l">l</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="m">m</button>
+                                <button class="key-btn" data-key="n">n</button>
+                                <button class="key-btn" data-key="o">o</button>
+                                <button class="key-btn" data-key="p">p</button>
+                                <button class="key-btn" data-key="q">q</button>
+                                <button class="key-btn" data-key="r">r</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="s">s</button>
+                                <button class="key-btn" data-key="t">t</button>
+                                <button class="key-btn" data-key="u">u</button>
+                                <button class="key-btn" data-key="v">v</button>
+                                <button class="key-btn" data-key="w">w</button>
+                                <button class="key-btn" data-key="x">x</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="y">y</button>
+                                <button class="key-btn" data-key="z">z</button>
+                                <button class="key-btn" data-key="1">1</button>
+                                <button class="key-btn" data-key="2">2</button>
+                                <button class="key-btn" data-key="3">3</button>
+                                <button class="key-btn" data-key="4">4</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn" data-key="5">5</button>
+                                <button class="key-btn" data-key="6">6</button>
+                                <button class="key-btn" data-key="7">7</button>
+                                <button class="key-btn" data-key="8">8</button>
+                                <button class="key-btn" data-key="9">9</button>
+                                <button class="key-btn" data-key="0">0</button>
+                            </div>
+                            <div class="keyboard-row">
+                                <button class="key-btn key-delete" data-key="delete">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM19 15.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                                    </svg>
+                                </button>
+                                <button class="key-btn key-space" data-key="space">space</button>
+                                <button class="key-btn key-clear" data-key="clear">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Search Results Section -->
+                        <div class="search-results-section">
+                            <div class="search-results-container">
+                                <!-- Search results will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Home Content (default view) -->
+                <div class="home-content">
+                    <!-- Continue Watching Row -->
+                    <div class="content-row continue-watching-row">
+                        <h2 class="row-title">Continue Watching</h2>
+                        <div class="content-grid">
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg" alt="Stranger Things" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="65"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>Stranger Things</h3>
+                                    <p>S4 E7 • 42 min left</p>
+                                </div>
+                            </div>
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/1BIoJGKbXP6oFzwzqYgxuBvQMgm.jpg" alt="Game of Thrones" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="23"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>Game of Thrones</h3>
+                                    <p>S1 E3 • 51 min left</p>
+                                </div>
+                            </div>
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="Breaking Bad" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="88"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>Breaking Bad</h3>
+                                    <p>S2 E12 • 8 min left</p>
+                                </div>
+                            </div>
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="Top Gun: Maverick" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="45"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>Top Gun: Maverick</h3>
+                                    <p>1h 18min left</p>
+                                </div>
+                            </div>
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg" alt="The Office" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="12"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>The Office</h3>
+                                    <p>S3 E14 • 19 min left</p>
+                                </div>
+                            </div>
+                            <div class="content-item">
+                                <img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Avengers: Infinity War" class="poster-image">
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar" data-progress="76"></div>
+                                </div>
+                                <div class="content-overlay">
+                                    <h3>Avengers: Infinity War</h3>
+                                    <p>38 min left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row 1 -->
+                    <div class="content-row">
+                        <h2 class="row-title">Featured Movies</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" alt="The Lion King" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Lion King</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg" alt="Avengers: Infinity War" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Avengers: Infinity War</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" alt="The Shawshank Redemption" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Shawshank Redemption</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg" alt="Spider-Man: No Way Home" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Spider-Man: No Way Home</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg" alt="Top Gun: Maverick" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Top Gun: Maverick</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="Batman Begins" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Batman Begins</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg" alt="Fight Club" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Fight Club</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/5EJWZQ8AuJPIso2JdTWKLWKhUCl.jpg" alt="Jurassic Park" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Jurassic Park</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 2 -->
+                <div class="content-row">
+                    <h2 class="row-title">Popular TV Shows</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg" alt="Stranger Things" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Stranger Things</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1BIoJGKbXP6oFzwzqYgxuBvQMgm.jpg" alt="Game of Thrones" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Game of Thrones</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" alt="Breaking Bad" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Breaking Bad</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg" alt="The Office" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Office</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/fuVuDYrs8sxvEolnYr0wCSvtyTi.jpg" alt="Friends" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Friends</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/zLudbPueg8CxGhMS2tyDh3p0TdK.jpg" alt="Seinfeld" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Seinfeld</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rBRmWARlDlS3ygmYYOuMp0oUs2X.jpg" alt="The Sopranos" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Sopranos</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/7OnF42CgL1D4UOtFe2jJpG5PoEM.jpg" alt="Cheers" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Cheers</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 3 -->
+                <div class="content-row">
+                    <h2 class="row-title">Action & Adventure</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg" alt="Avatar" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Avatar</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg" alt="The Dark Knight" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Dark Knight</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/xvx4Yhf0DVH8G4LzNISpMfFBDy2.jpg" alt="Forrest Gump" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Forrest Gump</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/lmZFxXgJE3vgrciwuDib0N8CfQo.jpg" alt="The Matrix" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Matrix</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 4 -->
+                <div class="content-row">
+                    <h2 class="row-title">Comedy Classics</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/iB64vpL3dIObOtMZgX3RqdVdQDc.jpg" alt="Superbad" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Superbad</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg" alt="Zombieland" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Zombieland</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/aKx1ARwG55zZ0GpRvU2WrGrCG9o.jpg" alt="Pineapple Express" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Pineapple Express</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/2CAL2433ZeIihfX1Hb2139CX0pW.jpg" alt="Step Brothers" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Step Brothers</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 5 -->
+                <div class="content-row">
+                    <h2 class="row-title">Sci-Fi Adventures</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/qAKvUu2FSaDUEUDGBXaq186SR6w.jpg" alt="Interstellar" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Interstellar</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Blade Runner 2049" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Blade Runner 2049</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" alt="Star Wars: The Empire Strikes Back" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Star Wars: The Empire Strikes Back</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/AdqOBPw4PdtzOcfEuQuZ8MNeTKb.jpg" alt="Dune" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Dune</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 6 -->
+                <div class="content-row">
+                    <h2 class="row-title">Horror Thrills</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/db32LaOibwEliAmSL2jjDF6oDdj.jpg" alt="Get Out" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Get Out</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/9E2y5Q7WlCVNEhP5GiVTjhEhx1o.jpg" alt="Hereditary" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Hereditary</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg" alt="A Quiet Place" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>A Quiet Place</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/ujr5pztc1oitbe7ViMUOilFaJ7s.jpg" alt="The Conjuring" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Conjuring</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 7 -->
+                <div class="content-row">
+                    <h2 class="row-title">Drama Masterpieces</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" alt="The Godfather" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Godfather</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg" alt="Goodfellas" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Goodfellas</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rSPw7tgCH9c6NqICZef4kZjFOQ5.jpg" alt="Pulp Fiction" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Pulp Fiction</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg" alt="Schindler's List" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Schindler's List</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 8 -->
+                <div class="content-row">
+                    <h2 class="row-title">Animated Adventures</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg" alt="Toy Story" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Toy Story</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/gHdQjbKcYjlAP8fOyxKwqM82c9v.jpg" alt="Shrek" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Shrek</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" alt="Finding Nemo" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Finding Nemo</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/4q2hz2m8hubgvijz8Ez0T2Os2Yv.jpg" alt="The Incredibles" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Incredibles</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 9 -->
+                <div class="content-row">
+                    <h2 class="row-title">True Crime Documentaries</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg" alt="Making a Murderer" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Making a Murderer</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/2uzHwgSMsFpCE7Iw5p8BLLQ2FKe.jpg" alt="Tiger King" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Tiger King</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1WTDSlqGqvZ3QxSWwDH9GKmlLG6.jpg" alt="The Staircase" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Staircase</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/rqBCeqeSNy8G1PVrDMPRaMPDxSP.jpg" alt="Wild Wild Country" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Wild Wild Country</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 10 -->
+                <div class="content-row">
+                    <h2 class="row-title">International Cinema</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg" alt="Parasite" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Parasite</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/qVxMjkRCcfrb0Apn7oLh87qPPBk.jpg" alt="Amélie" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Amélie</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/3WFGe4lhm7R9pfx7f4yYEw2wV9g.jpg" alt="Cinema Paradiso" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Cinema Paradiso</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/oZlPVnbJ8YuEyZNJUU8RHfVb4Y7.jpg" alt="Life is Beautiful" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Life is Beautiful</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 11 -->
+                <div class="content-row">
+                    <h2 class="row-title">Romantic Movies</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/yb3DtZ8OTyPGNOGySd6oPUQqeVd.jpg" alt="The Notebook" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Notebook</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/kHXEpyfl6zqn8a6YuozZUujufXf.jpg" alt="Titanic" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Titanic</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/wFE8eUuNGpaoagmM0wOGqKy72dJ.jpg" alt="Casablanca" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Casablanca</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/mXuqM7ksHW1AJ30AInwJvAaNHSX.jpg" alt="When Harry Met Sally" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>When Harry Met Sally</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 12 -->
+                <div class="content-row">
+                    <h2 class="row-title">Superhero Spectacle</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" alt="Avengers: Endgame" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Avengers: Endgame</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/5Kg76ldv7VxeX9YlcQXiowHgdX6.jpg" alt="Aquaman" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Aquaman</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1BIoJGKbXP6oFzwzqYgxuBvQMgm.jpg" alt="Black Panther" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Black Panther</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/1vRoZ8lTq80DXJJNfq4FGJOPb7X.jpg" alt="Wonder Woman" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Wonder Woman</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row 13 -->
+                <div class="content-row">
+                    <h2 class="row-title">Classic TV Series</h2>
+                    <div class="content-grid">
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/KoYWXbnYuS3b0GyQPkbuexlVK9.jpg" alt="Friends" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Friends</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/l7tTazjl73rf2HrEwkgGMjjHu1G.jpg" alt="Seinfeld" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Seinfeld</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/clnyhPqj1SNgpAdeSS6a6fwE6Bo.jpg" alt="The Sopranos" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>The Sopranos</h3>
+                            </div>
+                        </div>
+                        <div class="content-item">
+                            <img src="https://image.tmdb.org/t/p/w500/hKuDUlBaGplpby6cf11ANWFbWaA.jpg" alt="Cheers" class="poster-image">
+                            <div class="content-overlay">
+                                <h3>Cheers</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div> <!-- End home-content -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
