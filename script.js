@@ -1757,7 +1757,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchCursor = document.querySelector('.search-cursor');
         
         if (searchInput && searchCursor) {
-            const textWidth = getTextWidth(searchQuery, '24px Arial');
+            const textWidth = getTextWidth(searchQuery, '24px RokuUI');
             searchCursor.style.left = (20 + textWidth) + 'px';
         }
     }

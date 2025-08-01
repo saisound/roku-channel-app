@@ -54,28 +54,33 @@ body {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     font-size: 36px;
     font-weight: 700;
 }
 
 .logo-image {
-    height: 40px;
-    width: 342px;
+    height: 28px;
+    width: 239px;
     object-fit: contain;
 }
 
 .roku-text {
     color: #FFFFFF;
+    font-weight: 400;
 }
 
 .channel-text {
     color: #FFFFFF;
+    font-weight: 400;
 }
 
 .header-info {
     display: flex;
     align-items: center;
-    gap: 30px;
+    gap: 12px;
     font-size: 18px;
     font-weight: 500;
 }
@@ -85,8 +90,24 @@ body {
     font-weight: 600;
 }
 
+.divider {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+    user-select: none;
+}
+
 .options {
     color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.options-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
 }
 
 .time {
@@ -94,7 +115,7 @@ body {
 }
 
 .options {
-    color: #B8B8B8;
+    color: #efefef;
 }
 
 .time {
@@ -430,20 +451,20 @@ body {
 /* Progress Bar Styles for Continue Watching */
 .continue-watching-row .progress-bar-container {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    height: 4px;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 2px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 9px;
+    background: #121212;
+    border-radius: 0;
     overflow: hidden;
     backdrop-filter: blur(5px);
 }
 
 .continue-watching-row .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #663399, #9966CC);
-    border-radius: 2px;
+    height: 9px;
+    background: #7540C4;
+    border-radius: 0;
     width: 0%;
     transition: width 0.8s ease-out;
     position: relative;
@@ -456,8 +477,7 @@ body {
     right: 0;
     width: 30%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
-    animation: shimmer 2s infinite;
+    background: #7540C4;
 }
 
 @keyframes shimmer {
@@ -480,9 +500,38 @@ body {
 
 /* Adjust progress bar position when content is focused */
 .continue-watching-row .content-item.focused .progress-bar-container {
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Hide text overlays in continue watching tiles */
+.continue-watching-row .tile-component .tile-title,
+.continue-watching-row .tile-component .tile-subtitle {
+    display: none !important;
+}
+
+.continue-watching-row .tile-component .tile-overlay {
+    display: none !important;
+}
+
+/* Hide text in any div that contains title/subtitle in continue watching */
+.continue-watching-row .tile-component div:has(.tile-title),
+.continue-watching-row .tile-component div:has(.tile-subtitle) {
+    display: none !important;
+}
+
+/* Alternative approach - hide the div that wraps title/subtitle */
+.continue-watching-row .tile-component > div:last-child {
+    display: none !important;
+}
+
+/* Override any hover/focus states that might show text */
+.continue-watching-row .tile-component:hover .tile-title,
+.continue-watching-row .tile-component:hover .tile-subtitle,
+.continue-watching-row .tile-component.focused .tile-title,
+.continue-watching-row .tile-component.focused .tile-subtitle {
+    display: none !important;
 }
 
 /* Live Badge Styles */
@@ -710,20 +759,20 @@ body {
 /* Progress Bar for Continue Watching Tiles */
 .tile-component.continue-watching .progress-bar-container {
     position: absolute;
-    bottom: 8px;
-    left: 8px;
-    right: 8px;
-    height: 3px;
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 2px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 9px;
+    background: #121212;
+    border-radius: 0;
     overflow: hidden;
     backdrop-filter: blur(5px);
 }
 
 .tile-component.continue-watching .progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #663399, #9966CC);
-    border-radius: 2px;
+    height: 9px;
+    background: #7540C4;
+    border-radius: 0;
     width: 0%;
     transition: width 0.8s ease-out;
     position: relative;
@@ -736,14 +785,13 @@ body {
     right: 0;
     width: 30%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
-    animation: shimmer 2s infinite;
+    background: #7540C4;
 }
 
 .tile-component.continue-watching.focused .progress-bar-container {
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 /* Continue Watching specific styles for large tiles */
@@ -760,21 +808,21 @@ body {
 /* Enhanced progress bar styling for large tiles */
 .continue-watching-row .tile-component.continue-watching .progress-bar-container {
     position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    height: 4px;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 2px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 9px;
+    background: #121212;
+    border-radius: 0;
     overflow: hidden;
     backdrop-filter: blur(5px);
 }
 
 .continue-watching-row .tile-component.continue-watching.focused .progress-bar-container {
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    height: 5px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 9px;
 }
 
 /* Responsive Scaling for Tiles */
