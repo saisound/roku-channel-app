@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPageNavIndex = 1; // Track the current page/section (persists when focus moves to content)
     let currentContentRow = 0;
     let currentContentItem = 0;
+    let currentSection = 'Home'; // Track current section for Live badge management
     
     // Remember last focused content position for restoration
     let lastContentRow = 0;
@@ -373,6 +374,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="content-placeholder"></div>
             <h3>${content.title}</h3>
         `;
+        
+        // Add Live badge if we're in Live TV mode
+        if (currentSection === 'Live TV') {
+            newItem.style.position = 'relative';
+            const liveBadge = createLiveBadge();
+            newItem.appendChild(liveBadge);
+        }
         
         return newItem;
     }
@@ -1222,6 +1230,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update content based on navigation selection
     function updateContent(section) {
+        // Update current section
+        currentSection = section;
+        
         const rowTitles = document.querySelectorAll('.row-title');
         const searchPage = document.querySelector('.search-page');
         const homeContent = document.querySelector('.home-content');
@@ -1259,6 +1270,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Ensure all rows have exactly 10 items after content update
         ensureMinimumItemsPerRow();
+        
+        // Reapply Live badges if we're in Live TV mode
+        if (section === 'Live TV') {
+            addLiveBadgesToAllTiles();
+        }
     }
 
     // Update content for navigation focus changes (without changing page state)
@@ -1283,27 +1299,35 @@ document.addEventListener('DOMContentLoaded', function() {
         switch(section) {
             case 'Home':
                 updateRowTitles(['Featured Movies', 'Continue Watching', 'Popular TV Shows']);
+                removeLiveBadgesFromAllTiles();
                 break;
             case 'Movies':
                 updateRowTitles(['Latest Movies', 'Classic Films', 'Independent Cinema']);
+                removeLiveBadgesFromAllTiles();
                 break;
             case 'TV Series':
                 updateRowTitles(['Popular Series', 'New Episodes', 'Binge-Worthy Shows']);
+                removeLiveBadgesFromAllTiles();
                 break;
             case 'Live TV':
                 updateRowTitles(['News Channels', 'Sports Channels', 'Entertainment']);
+                addLiveBadgesToAllTiles();
                 break;
             case 'Premium':
                 updateRowTitles(['Premium Movies', 'Premium Series', 'Exclusive Content']);
+                removeLiveBadgesFromAllTiles();
                 break;
             case 'Kids & Family':
                 updateRowTitles(['Kids Shows', 'Family Movies', 'Educational Content']);
+                removeLiveBadgesFromAllTiles();
                 break;
             case 'Search':
                 updateRowTitles(['Search Results', 'Popular Searches', 'Trending Now']);
+                removeLiveBadgesFromAllTiles();
                 break;
             default:
                 updateRowTitles(['Featured Movies', 'Continue Watching', 'Popular TV Shows']);
+                removeLiveBadgesFromAllTiles();
         }
     }
 
@@ -1313,6 +1337,42 @@ document.addEventListener('DOMContentLoaded', function() {
             if (rowTitles[index]) {
                 rowTitles[index].textContent = title;
             }
+        });
+    }
+
+    // Live Badge Management Functions
+    function createLiveBadge() {
+        const badge = document.createElement('div');
+        badge.className = 'live-badge';
+        badge.textContent = 'LIVE';
+        return badge;
+    }
+
+    function addLiveBadgesToAllTiles() {
+        // Remove existing badges first
+        removeLiveBadgesFromAllTiles();
+        
+        // Get all content items and tile components
+        const contentItems = document.querySelectorAll('.content-item, .tile-component');
+        
+        contentItems.forEach(item => {
+            // Skip items that already have a live badge
+            if (!item.querySelector('.live-badge')) {
+                const liveBadge = createLiveBadge();
+                item.appendChild(liveBadge);
+                
+                // Make sure the parent has relative positioning for absolute badge positioning
+                if (getComputedStyle(item).position === 'static') {
+                    item.style.position = 'relative';
+                }
+            }
+        });
+    }
+
+    function removeLiveBadgesFromAllTiles() {
+        const liveBadges = document.querySelectorAll('.live-badge');
+        liveBadges.forEach(badge => {
+            badge.remove();
         });
     }
 
