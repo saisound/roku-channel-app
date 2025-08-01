@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentContentRow = 0;
     let currentContentItem = 0;
     
+    // Remember last focused content position for restoration
+    let lastContentRow = 0;
+    let lastContentItem = 0;
+    
     // Search functionality variables
     let searchQuery = '';
     let currentKeyboardRow = 0;
@@ -674,6 +678,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (newRowItems && currentContentItem >= newRowItems.length) {
                     currentContentItem = newRowItems.length - 1;
                 }
+                
+                // Save the new position
+                lastContentRow = currentContentRow;
+                lastContentItem = currentContentItem;
             }
         }
     }
@@ -692,6 +700,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (newRowItems && currentContentItem >= newRowItems.length) {
                     currentContentItem = newRowItems.length - 1;
                 }
+                
+                // Save the new position
+                lastContentRow = currentContentRow;
+                lastContentItem = currentContentItem;
             }
         }
     }
@@ -700,6 +712,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentFocus === 'content') {
             // If on first tile, move focus back to sidebar (left navigation)
             if (currentContentItem === 0) {
+                // Save the current position before moving to sidebar
+                lastContentRow = currentContentRow;
+                lastContentItem = currentContentItem;
+                
                 currentFocus = 'sidebar';
                 console.log('🎯 Moving from first tile back to sidebar navigation');
                 return;
@@ -729,6 +745,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+            
+            // Save the new position
+            lastContentRow = currentContentRow;
+            lastContentItem = currentContentItem;
         }
     }
 
@@ -736,8 +756,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentFocus === 'sidebar') {
             // Move to content area
             currentFocus = 'content';
-            currentContentRow = 0;
-            currentContentItem = 0;
+            
+            // Restore the last focused content position
+            currentContentRow = lastContentRow;
+            currentContentItem = lastContentItem;
+            
+            console.log(`🔄 Restoring focus to Row ${currentContentRow + 1}, Item ${currentContentItem + 1}`);
         } else if (currentFocus === 'content') {
             const currentRow = document.querySelectorAll('.content-row')[currentContentRow];
             const contentGrid = currentRow?.querySelector('.content-grid');
@@ -763,6 +787,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+            
+            // Save the new position
+            lastContentRow = currentContentRow;
+            lastContentItem = currentContentItem;
         }
     }
 
@@ -785,7 +813,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleBack() {
         if (currentFocus === 'content') {
-            currentFocus = 'sidebar';
+            // Check if we're already at the top (first tile of first row)
+            if (currentContentRow === 0 && currentContentItem === 0) {
+                // Second back press: Go to sidebar navigation (focus on active nav item)
+                lastContentRow = currentContentRow;
+                lastContentItem = currentContentItem;
+                
+                console.log(`💾 Saving content position: Row ${lastContentRow + 1}, Item ${lastContentItem + 1}`);
+                console.log(`🔙 Second back press: Moving to sidebar navigation`);
+                
+                currentFocus = 'sidebar';
+                // Focus on the active/current page nav item
+                currentNavIndex = currentPageNavIndex;
+            } else {
+                // First back press: Go to first tile of first row
+                console.log(`🔙 First back press: Going to top of page (Row 1, Item 1)`);
+                
+                currentContentRow = 0;
+                currentContentItem = 0;
+                
+                // Update the saved position as well
+                lastContentRow = currentContentRow;
+                lastContentItem = currentContentItem;
+            }
         }
     }
 
