@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roku Channel - Large Continue Watching Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-container {
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            margin-bottom: 40px;
+        }
+        
+        .demo-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #663399;
+            padding-bottom: 10px;
+        }
+        
+        .demo-description {
+            font-size: 16px;
+            color: #B8B8B8;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .demo-btn {
+            background: linear-gradient(45deg, #663399, #9966CC);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px 20px 0;
+        }
+        
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 51, 153, 0.4);
+        }
+        
+        .demo-btn.secondary {
+            background: linear-gradient(45deg, #333, #666);
+        }
+        
+        .comparison {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        
+        .comparison-item {
+            flex: 1;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+        
+        .comparison-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+        }
+        
+        .size-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #E0E0E0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+            </div>
+            <div class="header-info">
+                <span class="page-indicator">• Continue Watching Demo</span>
+                <span class="options">* for Options</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <div class="demo-container">
+            <h1 class="demo-title">Continue Watching with Large 16:9 Tiles</h1>
+            <p class="demo-description">
+                This demo shows the enhanced Continue Watching row using large 16:9 tiles instead of the standard medium-sized tiles. 
+                The large format provides better visibility for content thumbnails and progress indicators.
+            </p>
+
+            <!-- Size Comparison -->
+            <div class="demo-section">
+                <h2 class="demo-title">Size Comparison</h2>
+                <div class="comparison">
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">Medium 16:9 (Standard)</h3>
+                        <div id="medium-tile-demo"></div>
+                        <div class="size-info">
+                            Size: 278×156 pixels<br>
+                            Best for: Regular content rows
+                        </div>
+                    </div>
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">Large 16:9 (Enhanced)</h3>
+                        <div id="large-tile-demo"></div>
+                        <div class="size-info">
+                            Size: 423×237 pixels<br>
+                            Best for: Featured content, Continue Watching
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Controls -->
+            <div class="demo-section">
+                <h2 class="demo-title">Try It Out</h2>
+                <p class="demo-description">
+                    Test the new Continue Watching row in your main app or see it in action here.
+                </p>
+                
+                <button class="demo-btn" onclick="showLargeContinueWatching()">
+                    Create Large Continue Watching Row
+                </button>
+                
+                <button class="demo-btn secondary" onclick="replaceContinueWatchingInMainApp()">
+                    Apply to Main App
+                </button>
+                
+                <button class="demo-btn secondary" onclick="openMainApp()">
+                    Open Main App
+                </button>
+                
+                <div id="continue-watching-demo" style="margin-top: 30px;"></div>
+            </div>
+
+            <!-- Features -->
+            <div class="demo-section">
+                <h2 class="demo-title">Enhanced Features</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">🎯 Better Visibility</h3>
+                        <p style="color: #B8B8B8;">Larger thumbnails make it easier to identify content at a glance</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">📊 Enhanced Progress Bars</h3>
+                        <p style="color: #B8B8B8;">More prominent progress indicators for better user feedback</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">🎮 Keyboard Navigation</h3>
+                        <p style="color: #B8B8B8;">Full arrow key navigation support with focus indicators</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h3 class="comparison-title">♾️ Infinite Scrolling</h3>
+                        <p style="color: #B8B8B8;">Seamless horizontal navigation with carousel behavior</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Code Example -->
+            <div class="demo-section">
+                <h2 class="demo-title">Implementation Code</h2>
+                <div class="size-info">
+// Replace Continue Watching row with large tiles
+replaceContinueWatchingWithLargeTiles();
+
+// Or create manually:
+const continueWatchingConfig = [
+    {
+        type: '16:9',
+        size: 'large',
+        content: {
+            title: 'Stranger Things',
+            subtitle: 'S4 E7 • 42 min left'
+        },
+        options: {
+            continueWatching: true,
+            progress: 65
+        }
+    }
+    // ... more items
+];
+
+const row = TileComponent.createTileRow('Continue Watching', continueWatchingConfig);
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function showLargeContinueWatching() {
+            const container = document.getElementById('continue-watching-demo');
+            container.innerHTML = '';
+            
+            const continueWatchingConfig = [
+                {
+                    type: '16:9',
+                    size: 'large',
+                    content: {
+                        title: 'Stranger Things',
+                        subtitle: 'S4 E7 • 42 min left',
+                        image: 'https://image.tmdb.org/t/p/w500/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg'
+                    },
+                    options: {
+                        continueWatching: true,
+                        progress: 65
+                    }
+                },
+                {
+                    type: '16:9',
+                    size: 'large',
+                    content: {
+                        title: 'Breaking Bad',
+                        subtitle: 'S2 E12 • 8 min left',
+                        image: 'https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg'
+                    },
+                    options: {
+                        continueWatching: true,
+                        progress: 88
+                    }
+                },
+                {
+                    type: '16:9',
+                    size: 'large',
+                    content: {
+                        title: 'Top Gun: Maverick',
+                        subtitle: '1h 18min left',
+                        image: 'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg'
+                    },
+                    options: {
+                        continueWatching: true,
+                        progress: 45
+                    }
+                }
+            ];
+            
+            const row = TileComponent.createTileRow('Continue Watching (Large Tiles)', continueWatchingConfig);
+            row.classList.add('continue-watching-row');
+            container.appendChild(row);
+        }
+
+        function replaceContinueWatchingInMainApp() {
+            if (typeof replaceContinueWatchingWithLargeTiles === 'function') {
+                replaceContinueWatchingWithLargeTiles();
+                alert('✅ Continue Watching row has been updated to use large 16:9 tiles!\n\n• Navigate to the main app to see the changes\n• Use arrow keys to navigate\n• Enjoy the enhanced viewing experience!');
+            } else {
+                alert('❌ Function not available. Please open the main app first.');
+            }
+        }
+
+        function openMainApp() {
+            window.open('index.html', '_blank');
+        }
+
+        // Create size comparison demos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Medium tile demo
+            const mediumTile = TileComponent.createTile('16:9', 'medium', {
+                title: 'Sample Content',
+                subtitle: 'Medium size example'
+            }, {
+                continueWatching: true,
+                progress: 50
+            });
+            document.getElementById('medium-tile-demo').appendChild(mediumTile);
+
+            // Large tile demo
+            const largeTile = TileComponent.createTile('16:9', 'large', {
+                title: 'Sample Content',
+                subtitle: 'Large size example'
+            }, {
+                continueWatching: true,
+                progress: 50
+            });
+            document.getElementById('large-tile-demo').appendChild(largeTile);
+        });
+
+        // Update time display
+        function updateTime() {
+            const timeElement = document.querySelector('.time');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html>

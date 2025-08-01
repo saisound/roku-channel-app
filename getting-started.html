@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roku Channel - Getting Started with Tiles</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .starter-guide {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #663399;
+        }
+        
+        .step-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 15px;
+        }
+        
+        .step-description {
+            font-size: 16px;
+            color: #B8B8B8;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #E0E0E0;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        .try-it-btn {
+            background: linear-gradient(45deg, #663399, #9966CC);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px 10px 0;
+        }
+        
+        .try-it-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(102, 51, 153, 0.4);
+        }
+        
+        .result-area {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        
+        .result-area:empty::before {
+            content: "Results will appear here...";
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+            </div>
+            <div class="header-info">
+                <span class="page-indicator">• Getting Started with Tiles</span>
+                <span class="options">* for Options</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <div class="starter-guide">
+            <h1 style="color: #FFFFFF; font-size: 32px; margin-bottom: 30px;">🚀 Getting Started with Tile Components</h1>
+            
+            <!-- Step 1: Basic Tile Creation -->
+            <div class="step">
+                <h2 class="step-title">Step 1: Create Your First Tile</h2>
+                <p class="step-description">
+                    Start with a simple 16:9 medium tile - the most common format for video content.
+                </p>
+                
+                <div class="code-block">
+// Create a basic video tile
+const myFirstTile = TileComponent.createTile('16:9', 'medium', {
+    title: 'The Mandalorian',
+    subtitle: 'Sci-Fi • Action'
+});
+
+// Add it to a container
+document.getElementById('step1-result').appendChild(myFirstTile);
+                </div>
+                
+                <button class="try-it-btn" onclick="tryStep1()">Try Step 1</button>
+                <div id="step1-result" class="result-area"></div>
+            </div>
+
+            <!-- Step 2: Different Sizes -->
+            <div class="step">
+                <h2 class="step-title">Step 2: Try Different Sizes</h2>
+                <p class="step-description">
+                    See how the same content looks in small, medium, and large sizes.
+                </p>
+                
+                <div class="code-block">
+// Create tiles in different sizes
+const sizes = ['small', 'medium', 'large'];
+const container = document.getElementById('step2-result');
+
+sizes.forEach(size => {
+    const tile = TileComponent.createTile('16:9', size, {
+        title: `${size.charAt(0).toUpperCase() + size.slice(1)} Tile`,
+        subtitle: 'Same content, different size'
+    });
+    container.appendChild(tile);
+});
+                </div>
+                
+                <button class="try-it-btn" onclick="tryStep2()">Try Step 2</button>
+                <div id="step2-result" class="result-area" style="display: flex; gap: 20px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Step 3: Different Aspect Ratios -->
+            <div class="step">
+                <h2 class="step-title">Step 3: Explore Aspect Ratios</h2>
+                <p class="step-description">
+                    Different content types work better with different aspect ratios.
+                </p>
+                
+                <div class="code-block">
+// Create tiles with different aspect ratios
+const ratios = [
+    { type: 'promo', size: 'large', title: 'Promo Banner' },
+    { type: '21:9', size: 'medium', title: 'Cinematic' },
+    { type: '16:9', size: 'medium', title: 'Standard Video' },
+    { type: '4:3', size: 'small', title: 'Classic TV' },
+    { type: '2:3', size: 'medium', title: 'Movie Poster' }
+];
+
+const container = document.getElementById('step3-result');
+ratios.forEach(config => {
+    const tile = TileComponent.createTile(config.type, config.size, {
+        title: config.title,
+        subtitle: `${config.type} aspect ratio`
+    });
+    container.appendChild(tile);
+});
+                </div>
+                
+                <button class="try-it-btn" onclick="tryStep3()">Try Step 3</button>
+                <div id="step3-result" class="result-area" style="display: flex; gap: 15px; flex-wrap: wrap; align-items: flex-start;"></div>
+            </div>
+
+            <!-- Step 4: Continue Watching -->
+            <div class="step">
+                <h2 class="step-title">Step 4: Add Continue Watching Progress</h2>
+                <p class="step-description">
+                    Add progress bars to show viewing progress on content.
+                </p>
+                
+                <div class="code-block">
+// Create continue watching tiles with progress
+const shows = [
+    { title: 'Breaking Bad', progress: 45 },
+    { title: 'Stranger Things', progress: 78 },
+    { title: 'The Crown', progress: 23 }
+];
+
+const container = document.getElementById('step4-result');
+shows.forEach(show => {
+    const tile = TileComponent.createTile('16:9', 'medium', {
+        title: show.title,
+        subtitle: 'Continue Watching'
+    }, {
+        continueWatching: true,
+        progress: show.progress
+    });
+    container.appendChild(tile);
+});
+                </div>
+                
+                <button class="try-it-btn" onclick="tryStep4()">Try Step 4</button>
+                <div id="step4-result" class="result-area" style="display: flex; gap: 20px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Step 5: Complete Row -->
+            <div class="step">
+                <h2 class="step-title">Step 5: Create a Complete Content Row</h2>
+                <p class="step-description">
+                    Build a complete row with title and multiple tiles - ready to add to your app.
+                </p>
+                
+                <div class="code-block">
+// Create a complete content row
+const rowConfig = [
+    { type: '16:9', size: 'large', content: { title: 'Featured Movie', subtitle: 'Action • 2024' } },
+    { type: '16:9', size: 'medium', content: { title: 'Popular Series', subtitle: 'Drama • Comedy' } },
+    { type: '2:3', size: 'small', content: { title: 'New Release', subtitle: 'Thriller • 2024' } },
+    { type: '16:9', size: 'medium', content: { title: 'Trending Now', subtitle: 'Sci-Fi • Adventure' } }
+];
+
+const completeRow = TileComponent.createTileRow('Featured Content', rowConfig);
+document.getElementById('step5-result').appendChild(completeRow);
+                </div>
+                
+                <button class="try-it-btn" onclick="tryStep5()">Try Step 5</button>
+                <div id="step5-result" class="result-area"></div>
+            </div>
+
+            <!-- Step 6: Replace Main App Content -->
+            <div class="step">
+                <h2 class="step-title">Step 6: Integrate with Your Main App</h2>
+                <p class="step-description">
+                    Ready to see it in your main app? This will replace the main content with the new tile system.
+                </p>
+                
+                <div class="code-block">
+// Replace main app content with tile system
+TileComponent.createSampleTileLayouts();
+
+// Or create your own custom layout:
+// const contentArea = document.querySelector('.content-area');
+// contentArea.innerHTML = ''; // Clear existing content
+// 
+// // Add your custom rows
+// contentArea.appendChild(myCustomRow1);
+// contentArea.appendChild(myCustomRow2);
+                </div>
+                
+                <button class="try-it-btn" onclick="integrateWithMainApp()">Integrate with Main App</button>
+                <button class="try-it-btn" onclick="openMainApp()" style="background: linear-gradient(45deg, #333, #666);">Open Main App</button>
+                
+                <p style="color: #B8B8B8; font-size: 14px; margin-top: 15px;">
+                    💡 <strong>Tip:</strong> After integration, use keyboard navigation (arrow keys) to navigate through your new tiles!
+                </p>
+            </div>
+
+            <!-- Quick Reference -->
+            <div class="step">
+                <h2 class="step-title">Quick Reference</h2>
+                <p class="step-description">
+                    Common tile configurations you can copy and paste:
+                </p>
+                
+                <div class="code-block">
+// Promotional banner
+TileComponent.createTile('promo', 'large', {
+    title: 'Special Event',
+    subtitle: 'Limited Time Offer'
+});
+
+// Standard video tile
+TileComponent.createTile('16:9', 'medium', {
+    title: 'Movie Title',
+    subtitle: 'Genre • Year'
+});
+
+// Movie poster
+TileComponent.createTile('2:3', 'large', {
+    title: 'Blockbuster Movie',
+    subtitle: 'Now Streaming'
+});
+
+// Continue watching
+TileComponent.createTile('16:9', 'medium', {
+    title: 'Series Name',
+    subtitle: 'Season 1 • Episode 5'
+}, {
+    continueWatching: true,
+    progress: 65
+});
+
+// Complete row
+TileComponent.createTileRow('Row Title', [
+    { type: '16:9', size: 'medium', content: { title: 'Content 1' } },
+    { type: '16:9', size: 'medium', content: { title: 'Content 2' } }
+]);
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function tryStep1() {
+            const container = document.getElementById('step1-result');
+            container.innerHTML = ''; // Clear previous
+            
+            const myFirstTile = TileComponent.createTile('16:9', 'medium', {
+                title: 'The Mandalorian',
+                subtitle: 'Sci-Fi • Action'
+            });
+            
+            container.appendChild(myFirstTile);
+        }
+
+        function tryStep2() {
+            const container = document.getElementById('step2-result');
+            container.innerHTML = ''; // Clear previous
+            
+            const sizes = ['small', 'medium', 'large'];
+            sizes.forEach(size => {
+                const tile = TileComponent.createTile('16:9', size, {
+                    title: `${size.charAt(0).toUpperCase() + size.slice(1)} Tile`,
+                    subtitle: 'Same content, different size'
+                });
+                container.appendChild(tile);
+            });
+        }
+
+        function tryStep3() {
+            const container = document.getElementById('step3-result');
+            container.innerHTML = ''; // Clear previous
+            
+            const ratios = [
+                { type: 'promo', size: 'large', title: 'Promo Banner' },
+                { type: '21:9', size: 'medium', title: 'Cinematic' },
+                { type: '16:9', size: 'medium', title: 'Standard Video' },
+                { type: '4:3', size: 'small', title: 'Classic TV' },
+                { type: '2:3', size: 'medium', title: 'Movie Poster' }
+            ];
+
+            ratios.forEach(config => {
+                const tile = TileComponent.createTile(config.type, config.size, {
+                    title: config.title,
+                    subtitle: `${config.type} aspect ratio`
+                });
+                container.appendChild(tile);
+            });
+        }
+
+        function tryStep4() {
+            const container = document.getElementById('step4-result');
+            container.innerHTML = ''; // Clear previous
+            
+            const shows = [
+                { title: 'Breaking Bad', progress: 45 },
+                { title: 'Stranger Things', progress: 78 },
+                { title: 'The Crown', progress: 23 }
+            ];
+
+            shows.forEach(show => {
+                const tile = TileComponent.createTile('16:9', 'medium', {
+                    title: show.title,
+                    subtitle: 'Continue Watching'
+                }, {
+                    continueWatching: true,
+                    progress: show.progress
+                });
+                container.appendChild(tile);
+            });
+        }
+
+        function tryStep5() {
+            const container = document.getElementById('step5-result');
+            container.innerHTML = ''; // Clear previous
+            
+            const rowConfig = [
+                { type: '16:9', size: 'large', content: { title: 'Featured Movie', subtitle: 'Action • 2024' } },
+                { type: '16:9', size: 'medium', content: { title: 'Popular Series', subtitle: 'Drama • Comedy' } },
+                { type: '2:3', size: 'small', content: { title: 'New Release', subtitle: 'Thriller • 2024' } },
+                { type: '16:9', size: 'medium', content: { title: 'Trending Now', subtitle: 'Sci-Fi • Adventure' } }
+            ];
+
+            const completeRow = TileComponent.createTileRow('Featured Content', rowConfig);
+            container.appendChild(completeRow);
+        }
+
+        function integrateWithMainApp() {
+            TileComponent.createSampleTileLayouts();
+            alert('✅ Main app content has been replaced with the new tile system!\n\n• Use arrow keys to navigate\n• Press Enter to select tiles\n• Enjoy your new tile-based interface!');
+        }
+
+        function openMainApp() {
+            window.open('index.html', '_blank');
+        }
+
+        // Update time display
+        function updateTime() {
+            const timeElement = document.querySelector('.time');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html>

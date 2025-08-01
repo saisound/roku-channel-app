@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roku Channel - Tile Component Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .demo-container {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            margin-bottom: 60px;
+        }
+        
+        .demo-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #663399;
+            padding-bottom: 10px;
+        }
+        
+        .demo-description {
+            font-size: 16px;
+            color: #B8B8B8;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .tile-showcase {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+        
+        .tile-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #B8B8B8;
+            text-align: center;
+        }
+        
+        .code-example {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #E0E0E0;
+            overflow-x: auto;
+        }
+        
+        .run-demo-btn {
+            background: linear-gradient(45deg, #663399, #9966CC);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .run-demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 51, 153, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+            </div>
+            <div class="header-info">
+                <span class="page-indicator">• Tile Component Demo</span>
+                <span class="options">* for Options</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <div class="demo-container">
+            <!-- Introduction -->
+            <div class="demo-section">
+                <h1 class="demo-title">Roku Channel Tile Component System</h1>
+                <p class="demo-description">
+                    This demo showcases the flexible tile component system that supports different aspect ratios and sizes
+                    based on your specifications. Each tile type maintains proper proportions and responsive behavior.
+                </p>
+            </div>
+
+            <!-- Promo Banners -->
+            <div class="demo-section">
+                <h2 class="demo-title">Promo Banners</h2>
+                <p class="demo-description">Wide promotional banners for featured content and announcements.</p>
+                
+                <div class="tile-showcase">
+                    <div>
+                        <div id="promo-small"></div>
+                        <div class="tile-info">Small: 1716×256 (scaled)</div>
+                    </div>
+                    <div>
+                        <div id="promo-large"></div>
+                        <div class="tile-info">Large: 1596×582 (scaled)</div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Create promo tiles
+const promoSmall = TileComponent.createTile('promo', 'small', {
+    title: 'Summer Movie Festival',
+    subtitle: 'Watch now for free'
+});
+
+const promoLarge = TileComponent.createTile('promo', 'large', {
+    title: 'Exclusive Premiere Weekend',
+    subtitle: 'New releases every Friday'
+});
+                </div>
+            </div>
+
+            <!-- 21:9 Banners -->
+            <div class="demo-section">
+                <h2 class="demo-title">21:9 Cinematic Banners</h2>
+                <p class="demo-description">Ultra-wide banners perfect for cinematic content and hero images.</p>
+                
+                <div class="tile-showcase">
+                    <div>
+                        <div id="banner-small"></div>
+                        <div class="tile-info">Small: 411×176</div>
+                    </div>
+                    <div>
+                        <div id="banner-medium"></div>
+                        <div class="tile-info">Medium: 556×238</div>
+                    </div>
+                    <div>
+                        <div id="banner-large"></div>
+                        <div class="tile-info">Large: 846×363</div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Create 21:9 banner tiles
+const banners = ['small', 'medium', 'large'].map(size => 
+    TileComponent.createTile('21:9', size, {
+        title: `Epic Movie ${size.charAt(0).toUpperCase() + size.slice(1)}`,
+        subtitle: 'Action • Adventure'
+    })
+);
+                </div>
+            </div>
+
+            <!-- 16:9 Standard Video -->
+            <div class="demo-section">
+                <h2 class="demo-title">16:9 Standard Video Tiles</h2>
+                <p class="demo-description">Standard widescreen format for most video content.</p>
+                
+                <div class="tile-showcase">
+                    <div>
+                        <div id="video-small"></div>
+                        <div class="tile-info">Small: 411×231</div>
+                    </div>
+                    <div>
+                        <div id="video-medium"></div>
+                        <div class="tile-info">Medium: 556×312</div>
+                    </div>
+                    <div>
+                        <div id="video-large"></div>
+                        <div class="tile-info">Large: 846×474</div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Create 16:9 video tiles
+const videoTile = TileComponent.createTile('16:9', 'medium', {
+    title: 'The Mandalorian',
+    subtitle: 'Sci-Fi • Action'
+}, {
+    continueWatching: true,
+    progress: 65
+});
+                </div>
+            </div>
+
+            <!-- 4:3 Classic TV -->
+            <div class="demo-section">
+                <h2 class="demo-title">4:3 Classic TV Format</h2>
+                <p class="demo-description">Traditional TV format for classic shows and retro content.</p>
+                
+                <div class="tile-showcase">
+                    <div>
+                        <div id="classic-small"></div>
+                        <div class="tile-info">Small: 324×243</div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Create 4:3 classic TV tile
+const classicTile = TileComponent.createTile('4:3', 'small', {
+    title: 'Classic Comedy Hour',
+    subtitle: 'Comedy • Vintage'
+});
+                </div>
+            </div>
+
+            <!-- 2:3 Portrait/Poster -->
+            <div class="demo-section">
+                <h2 class="demo-title">2:3 Portrait/Poster Format</h2>
+                <p class="demo-description">Vertical format perfect for movie posters and portrait content.</p>
+                
+                <div class="tile-showcase">
+                    <div>
+                        <div id="poster-small"></div>
+                        <div class="tile-info">Small: 266×399</div>
+                    </div>
+                    <div>
+                        <div id="poster-medium"></div>
+                        <div class="tile-info">Medium: 324×486</div>
+                    </div>
+                    <div>
+                        <div id="poster-large"></div>
+                        <div class="tile-info">Large: 411×617</div>
+                    </div>
+                </div>
+
+                <div class="code-example">
+// Create 2:3 poster tiles
+const posterTile = TileComponent.createTile('2:3', 'large', {
+    title: 'Blockbuster Movie',
+    subtitle: 'Now Streaming'
+});
+                </div>
+            </div>
+
+            <!-- Mixed Layout Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Mixed Layout Example</h2>
+                <p class="demo-description">Demonstration of how different tile types work together in a content row.</p>
+                
+                <button class="run-demo-btn" onclick="createMixedLayoutDemo()">
+                    Create Mixed Layout Demo
+                </button>
+                
+                <div id="mixed-layout-container"></div>
+
+                <div class="code-example">
+// Create a mixed layout row
+const mixedRowConfig = [
+    { type: 'promo', size: 'large', content: { title: 'Special Event' } },
+    { type: '16:9', size: 'medium', content: { title: 'Popular Show' } },
+    { type: '2:3', size: 'small', content: { title: 'New Movie' } },
+    { type: '21:9', size: 'medium', content: { title: 'Epic Series' } }
+];
+
+const mixedRow = TileComponent.createTileRow('Featured Content', mixedRowConfig);
+                </div>
+            </div>
+
+            <!-- Integration Demo -->
+            <div class="demo-section">
+                <h2 class="demo-title">Full App Integration</h2>
+                <p class="demo-description">See how the tile system integrates with the complete Roku Channel app.</p>
+                
+                <button class="run-demo-btn" onclick="TileComponent.createSampleTileLayouts()">
+                    Replace Main Content with Tile Demo
+                </button>
+                
+                <p style="color: #B8B8B8; font-size: 14px; margin-top: 10px;">
+                    This will replace the main content area with various tile layouts. Refresh the page to restore original content.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize tile demos when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create demo tiles for each section
+            createDemoTiles();
+        });
+
+        function createDemoTiles() {
+            // Promo banners
+            document.getElementById('promo-small').appendChild(
+                TileComponent.createTile('promo', 'small', {
+                    title: 'Summer Movie Festival',
+                    subtitle: 'Watch now for free'
+                })
+            );
+
+            document.getElementById('promo-large').appendChild(
+                TileComponent.createTile('promo', 'large', {
+                    title: 'Exclusive Premiere Weekend',
+                    subtitle: 'New releases every Friday'
+                })
+            );
+
+            // 21:9 banners
+            document.getElementById('banner-small').appendChild(
+                TileComponent.createTile('21:9', 'small', {
+                    title: 'Epic Adventure',
+                    subtitle: 'Action • Thriller'
+                })
+            );
+
+            document.getElementById('banner-medium').appendChild(
+                TileComponent.createTile('21:9', 'medium', {
+                    title: 'Cinematic Experience',
+                    subtitle: 'Drama • Sci-Fi'
+                })
+            );
+
+            document.getElementById('banner-large').appendChild(
+                TileComponent.createTile('21:9', 'large', {
+                    title: 'Ultimate Blockbuster',
+                    subtitle: 'Action • Adventure'
+                })
+            );
+
+            // 16:9 video tiles
+            document.getElementById('video-small').appendChild(
+                TileComponent.createTile('16:9', 'small', {
+                    title: 'Popular Series',
+                    subtitle: 'Comedy • Romance'
+                })
+            );
+
+            document.getElementById('video-medium').appendChild(
+                TileComponent.createTile('16:9', 'medium', {
+                    title: 'The Mandalorian',
+                    subtitle: 'Sci-Fi • Action'
+                }, {
+                    continueWatching: true,
+                    progress: 65
+                })
+            );
+
+            document.getElementById('video-large').appendChild(
+                TileComponent.createTile('16:9', 'large', {
+                    title: 'Breaking Bad',
+                    subtitle: 'Crime • Drama'
+                }, {
+                    continueWatching: true,
+                    progress: 23
+                })
+            );
+
+            // 4:3 classic TV
+            document.getElementById('classic-small').appendChild(
+                TileComponent.createTile('4:3', 'small', {
+                    title: 'Classic Comedy',
+                    subtitle: 'Comedy • Vintage'
+                })
+            );
+
+            // 2:3 poster tiles
+            document.getElementById('poster-small').appendChild(
+                TileComponent.createTile('2:3', 'small', {
+                    title: 'Indie Film',
+                    subtitle: 'Drama • Art'
+                })
+            );
+
+            document.getElementById('poster-medium').appendChild(
+                TileComponent.createTile('2:3', 'medium', {
+                    title: 'Box Office Hit',
+                    subtitle: 'Action • Adventure'
+                })
+            );
+
+            document.getElementById('poster-large').appendChild(
+                TileComponent.createTile('2:3', 'large', {
+                    title: 'Award Winner',
+                    subtitle: 'Drama • Biography'
+                })
+            );
+        }
+
+        function createMixedLayoutDemo() {
+            const container = document.getElementById('mixed-layout-container');
+            container.innerHTML = ''; // Clear existing content
+
+            const mixedRowConfig = [
+                { 
+                    type: 'promo', 
+                    size: 'large', 
+                    content: { 
+                        title: 'Special Event: Movie Marathon', 
+                        subtitle: 'This Weekend Only' 
+                    } 
+                },
+                { 
+                    type: '16:9', 
+                    size: 'medium', 
+                    content: { 
+                        title: 'Stranger Things', 
+                        subtitle: 'Sci-Fi • Thriller' 
+                    },
+                    options: {
+                        continueWatching: true,
+                        progress: 78
+                    }
+                },
+                { 
+                    type: '2:3', 
+                    size: 'small', 
+                    content: { 
+                        title: 'Top Gun: Maverick', 
+                        subtitle: 'Action • Drama' 
+                    } 
+                },
+                { 
+                    type: '21:9', 
+                    size: 'medium', 
+                    content: { 
+                        title: 'Dune: Part Two', 
+                        subtitle: 'Sci-Fi • Adventure' 
+                    } 
+                },
+                { 
+                    type: '4:3', 
+                    size: 'small', 
+                    content: { 
+                        title: 'Friends Reunion', 
+                        subtitle: 'Comedy • Special' 
+                    } 
+                }
+            ];
+
+            const mixedRow = TileComponent.createTileRow('Mixed Layout Showcase', mixedRowConfig);
+            container.appendChild(mixedRow);
+        }
+
+        // Update time display
+        function updateTime() {
+            const timeElement = document.querySelector('.time');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 60000);
+    </script>
+</body>
+</html>

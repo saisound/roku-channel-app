@@ -1,3 +1,28 @@
+/* Custom Font Declarations */
+@font-face {
+    font-family: 'RokuUI';
+    src: url('assets/fonts/RokuUI-Regular.vfc') format('vfc');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RokuUI';
+    src: url('assets/fonts/RokuUI-Medium.vfc') format('vfc');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'RokuUI';
+    src: url('assets/fonts/RokuUI-Bold.vfc') format('vfc');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -6,7 +31,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'RokuUI', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: url('assets/trc-background.png') center center/cover no-repeat, linear-gradient(135deg, #4A1A5C 0%, #2D0B3D 100%);
     color: #FFFFFF;
     overflow-x: hidden;
@@ -209,7 +234,7 @@ body {
 
 /* Bold text for current page nav items */
 .nav-item.current-page span {
-    font-weight: 700;
+    font-weight: 500;
 }
 
 /* Content Area */
@@ -478,20 +503,282 @@ body {
 }
 
 .title-text {
-    font-size: 28px;
+    font-size: 33px;
     font-weight: 700;
     color: #FFFFFF;
     margin-bottom: 8px;
     text-align: left;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .details-text {
-    font-size: 18px;
+    font-size: 33px;
     font-weight: 400;
     color: #B8B8B8;
     text-align: left;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Tile Component System */
+.tile-component {
+    background: linear-gradient(45deg, #8B5A9B, #A066B0, #B573C4);
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+}
+
+/* Promo Banner Tiles */
+.tile-promo-small {
+    width: 343px;  /* 1716px / 5 for responsive scaling */
+    height: 51px;  /* 256px / 5 for responsive scaling */
+    aspect-ratio: 1716/256;
+}
+
+.tile-promo-large {
+    width: 319px;  /* 1596px / 5 for responsive scaling */
+    height: 116px; /* 582px / 5 for responsive scaling */
+    aspect-ratio: 1596/582;
+}
+
+/* 21:9 Banner Tiles */
+.tile-21-9-small {
+    width: 206px;  /* 411px / 2 for responsive scaling */
+    height: 88px;  /* 176px / 2 for responsive scaling */
+    aspect-ratio: 21/9;
+}
+
+.tile-21-9-medium {
+    width: 278px;  /* 556px / 2 for responsive scaling */
+    height: 119px; /* 238px / 2 for responsive scaling */
+    aspect-ratio: 21/9;
+}
+
+.tile-21-9-large {
+    width: 423px;  /* 846px / 2 for responsive scaling */
+    height: 182px; /* 363px / 2 for responsive scaling */
+    aspect-ratio: 21/9;
+}
+
+/* 16:9 Tiles (Standard Video) */
+.tile-16-9-small {
+    width: 206px;  /* 411px / 2 for responsive scaling */
+    height: 116px; /* 231px / 2 for responsive scaling */
+    aspect-ratio: 16/9;
+}
+
+.tile-16-9-medium {
+    width: 278px;  /* 556px / 2 for responsive scaling */
+    height: 156px; /* 312px / 2 for responsive scaling */
+    aspect-ratio: 16/9;
+}
+
+.tile-16-9-large {
+    width: 423px;  /* 846px / 2 for responsive scaling */
+    height: 237px; /* 474px / 2 for responsive scaling */
+    aspect-ratio: 16/9;
+}
+
+/* 4:3 Tiles (Classic TV) */
+.tile-4-3-small {
+    width: 162px;  /* 324px / 2 for responsive scaling */
+    height: 122px; /* 243px / 2 for responsive scaling */
+    aspect-ratio: 4/3;
+}
+
+/* 2:3 Tiles (Portrait/Poster) */
+.tile-2-3-small {
+    width: 133px;  /* 266px / 2 for responsive scaling */
+    height: 200px; /* 399px / 2 for responsive scaling */
+    aspect-ratio: 2/3;
+}
+
+.tile-2-3-medium {
+    width: 162px;  /* 324px / 2 for responsive scaling */
+    height: 243px; /* 486px / 2 for responsive scaling */
+    aspect-ratio: 2/3;
+}
+
+.tile-2-3-large {
+    width: 206px;  /* 411px / 2 for responsive scaling */
+    height: 309px; /* 617px / 2 for responsive scaling */
+    aspect-ratio: 2/3;
+}
+
+/* Tile Content Styles */
+.tile-component .tile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.tile-component .tile-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 15px 10px 10px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.tile-component .tile-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.tile-component .tile-subtitle {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #B8B8B8;
+    line-height: 1.1;
+}
+
+/* Tile Focus and Hover States */
+.tile-component:hover .tile-image {
+    transform: scale(1.05);
+}
+
+.tile-component:hover .tile-overlay {
+    transform: translateY(0);
+}
+
+.tile-component.focused {
+    border: 4px solid #FFFFFF !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    z-index: 15 !important;
+    position: relative !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.tile-component.focused .tile-overlay {
+    transform: translateY(0) !important;
+}
+
+/* Tile Dividers */
+.tile-component::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    right: -10px;
+    height: 70%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 5;
+    transition: opacity 0.3s ease;
+}
+
+.tile-component:hover::after,
+.tile-component.focused::after {
+    opacity: 0;
+}
+
+/* Progress Bar for Continue Watching Tiles */
+.tile-component.continue-watching .progress-bar-container {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 2px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.tile-component.continue-watching .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #663399, #9966CC);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.8s ease-out;
+    position: relative;
+}
+
+.tile-component.continue-watching .progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3));
+    animation: shimmer 2s infinite;
+}
+
+.tile-component.continue-watching.focused .progress-bar-container {
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+}
+
+/* Continue Watching specific styles for large tiles */
+.continue-watching-row .tile-component.tile-16-9-large {
+    min-width: 423px; /* Ensure consistent sizing */
+}
+
+.continue-watching-row .tile-component.tile-16-9-large .tile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Enhanced progress bar styling for large tiles */
+.continue-watching-row .tile-component.continue-watching .progress-bar-container {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 2px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+}
+
+.continue-watching-row .tile-component.continue-watching.focused .progress-bar-container {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    height: 5px;
+}
+
+/* Responsive Scaling for Tiles */
+@media (max-width: 1200px) {
+    .tile-promo-small { width: 275px; height: 41px; }
+    .tile-promo-large { width: 255px; height: 93px; }
+    .tile-21-9-small { width: 165px; height: 71px; }
+    .tile-21-9-medium { width: 222px; height: 95px; }
+    .tile-21-9-large { width: 338px; height: 145px; }
+    .tile-16-9-small { width: 165px; height: 93px; }
+    .tile-16-9-medium { width: 222px; height: 125px; }
+    .tile-16-9-large { width: 338px; height: 190px; }
+    .tile-4-3-small { width: 130px; height: 97px; }
+    .tile-2-3-small { width: 106px; height: 160px; }
+    .tile-2-3-medium { width: 130px; height: 194px; }
+    .tile-2-3-large { width: 165px; height: 247px; }
+}
+
+@media (max-width: 768px) {
+    .tile-promo-small { width: 206px; height: 31px; }
+    .tile-promo-large { width: 191px; height: 70px; }
+    .tile-21-9-small { width: 124px; height: 53px; }
+    .tile-21-9-medium { width: 167px; height: 71px; }
+    .tile-21-9-large { width: 254px; height: 109px; }
+    .tile-16-9-small { width: 124px; height: 70px; }
+    .tile-16-9-medium { width: 167px; height: 94px; }
+    .tile-16-9-large { width: 254px; height: 142px; }
+    .tile-4-3-small { width: 97px; height: 73px; }
+    .tile-2-3-small { width: 80px; height: 120px; }
+    .tile-2-3-medium { width: 97px; height: 146px; }
+    .tile-2-3-large { width: 124px; height: 185px; }
 }
 
 /* Scrollbar Styling */

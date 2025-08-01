@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Ensure all rows have exactly 10 items
     ensureMinimumItemsPerRow();
 
+    // Clean up any cloned rows from previous implementations
+    cleanupClonedRows();
+
+    // Initialize seamless infinite vertical scrolling (temporarily disabled for debugging)
+    // initializeSeamlessVerticalScrolling();
+
     // Handle navigation item clicks
     navItems.forEach((item, index) => {
         item.addEventListener('click', function() {
@@ -221,6 +227,119 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`Created infinite carousel with exactly ${targetItemsPerRow} items per row`);
     }
     
+    // Clean up any cloned rows from previous implementations
+    function cleanupClonedRows() {
+        const clonedRows = document.querySelectorAll('.content-row.cloned-row');
+        clonedRows.forEach(row => row.remove());
+        
+        // Reset content area attributes
+        const contentArea = document.querySelector('.content-area');
+        if (contentArea) {
+            contentArea.removeAttribute('data-original-row-count');
+            // Reset scroll position to top if it was modified
+            contentArea.scrollTop = 0;
+        }
+        
+        console.log('🧹 Cleaned up cloned rows and reset content area');
+    }
+
+    // Initialize seamless infinite vertical scrolling (improved version)
+    function initializeSeamlessVerticalScrolling() {
+        const contentArea = document.querySelector('.content-area');
+        if (!contentArea) return;
+
+        // Store original rows for cloning
+        const originalRows = Array.from(contentArea.querySelectorAll('.content-row:not(.cloned-row)'));
+        if (originalRows.length === 0) return;
+
+        // Clone rows for seamless scrolling - only one set before and after
+        originalRows.forEach((row, index) => {
+            // Clone for after (when scrolling down past the last row)
+            const clonedRowAfter = row.cloneNode(true);
+            clonedRowAfter.classList.add('cloned-row', 'clone-after');
+            clonedRowAfter.setAttribute('data-original-index', index);
+            updateClonedRowIds(clonedRowAfter, `after-${index}`);
+            contentArea.appendChild(clonedRowAfter);
+
+            // Clone for before (when scrolling up past the first row)
+            const clonedRowBefore = row.cloneNode(true);
+            clonedRowBefore.classList.add('cloned-row', 'clone-before');
+            clonedRowBefore.setAttribute('data-original-index', index);
+            updateClonedRowIds(clonedRowBefore, `before-${index}`);
+            contentArea.insertBefore(clonedRowBefore, contentArea.firstChild);
+        });
+
+        // Store original count and setup monitoring
+        contentArea.setAttribute('data-original-row-count', originalRows.length);
+        addSeamlessScrollMonitoring(contentArea, originalRows);
+
+        console.log(`🔄 Initialized seamless vertical scrolling with ${originalRows.length} original rows`);
+    }
+
+    // Monitor scroll position for seamless transitions
+    function addSeamlessScrollMonitoring(contentArea, originalRows) {
+        let isResetting = false;
+        const originalRowCount = originalRows.length;
+
+        const handleSeamlessScroll = () => {
+            if (isResetting) return;
+
+            const scrollTop = contentArea.scrollTop;
+            const scrollHeight = contentArea.scrollHeight;
+            
+            // Calculate heights
+            const singleSetHeight = calculateSingleSetHeight(originalRows);
+            const beforeSectionHeight = singleSetHeight;
+            const originalSectionStart = beforeSectionHeight;
+            const originalSectionEnd = originalSectionStart + singleSetHeight;
+
+            // If scrolled into the "after" section, reset to equivalent position in original section
+            if (scrollTop > originalSectionEnd + (singleSetHeight * 0.1)) {
+                isResetting = true;
+                const offsetIntoAfterSection = scrollTop - originalSectionEnd;
+                const newPosition = originalSectionStart + offsetIntoAfterSection;
+
+                contentArea.style.scrollBehavior = 'auto';
+                contentArea.scrollTop = newPosition;
+
+                setTimeout(() => {
+                    contentArea.style.scrollBehavior = '';
+                    isResetting = false;
+                }, 10);
+
+                console.log('🔄 Seamless scroll: Reset from after section to original');
+            }
+
+            // If scrolled into the "before" section, reset to equivalent position in original section
+            if (scrollTop < originalSectionStart - (singleSetHeight * 0.1)) {
+                isResetting = true;
+                const offsetIntoBeforeSection = originalSectionStart - scrollTop;
+                const newPosition = originalSectionEnd - offsetIntoBeforeSection;
+
+                contentArea.style.scrollBehavior = 'auto';
+                contentArea.scrollTop = newPosition;
+
+                setTimeout(() => {
+                    contentArea.style.scrollBehavior = '';
+                    isResetting = false;
+                }, 10);
+
+                console.log('🔄 Seamless scroll: Reset from before section to original');
+            }
+        };
+
+        // Monitor scroll events with throttling
+        let scrollTimeout;
+        contentArea.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(handleSeamlessScroll, 10);
+        });
+
+        // Set initial scroll position to middle (original section)
+        const initialOffset = calculateSingleSetHeight(originalRows);
+        contentArea.scrollTop = initialOffset;
+    }
+    
     // Create additional content items to reach the target count
     function createAdditionalContentItem(index, row) {
         const additionalContent = [
@@ -308,6 +427,207 @@ document.addEventListener('DOMContentLoaded', function() {
         contentGrid._infiniteScrollHandler = handleInfiniteScroll;
     }
 
+    // Initialize infinite vertical scrolling for content rows
+    function initializeInfiniteVerticalScrolling() {
+        const contentArea = document.querySelector('.content-area');
+        if (!contentArea) return;
+
+        // Store original rows for cloning
+        const originalRows = Array.from(contentArea.querySelectorAll('.content-row:not(.cloned-row)'));
+        if (originalRows.length === 0) return;
+
+        // Set data attribute to track original count
+        contentArea.setAttribute('data-original-row-count', originalRows.length);
+
+        // Clone rows for seamless scrolling
+        cloneRowsForInfiniteScroll(contentArea, originalRows);
+
+        // Monitor scroll position for infinite effect
+        addVerticalScrollMonitoring(contentArea, originalRows);
+
+        console.log(`🔄 Initialized infinite vertical scrolling with ${originalRows.length} original rows`);
+    }
+
+    // Clone content rows for infinite vertical scrolling
+    function cloneRowsForInfiniteScroll(contentArea, originalRows) {
+        // Add rows after the originals for downward scrolling
+        for (let i = 0; i < 2; i++) { // Create 2 full sets of clones
+            originalRows.forEach((row, index) => {
+                const clonedRow = row.cloneNode(true);
+                clonedRow.classList.add('cloned-row');
+                clonedRow.setAttribute('data-original-index', index);
+                clonedRow.setAttribute('data-clone-set', i + 1);
+                
+                // Update any IDs to avoid conflicts
+                updateClonedRowIds(clonedRow, `clone-${i + 1}-${index}`);
+                
+                contentArea.appendChild(clonedRow);
+            });
+        }
+
+        // Add rows before the originals for upward scrolling
+        originalRows.slice().reverse().forEach((row, index) => {
+            const clonedRow = row.cloneNode(true);
+            clonedRow.classList.add('cloned-row', 'pre-clone');
+            clonedRow.setAttribute('data-original-index', originalRows.length - 1 - index);
+            clonedRow.setAttribute('data-clone-set', 'pre');
+            
+            // Update any IDs to avoid conflicts
+            updateClonedRowIds(clonedRow, `pre-clone-${index}`);
+            
+            contentArea.insertBefore(clonedRow, contentArea.firstChild);
+        });
+    }
+
+    // Update IDs in cloned rows to avoid conflicts
+    function updateClonedRowIds(clonedRow, suffix) {
+        // Update any elements with IDs
+        const elementsWithIds = clonedRow.querySelectorAll('[id]');
+        elementsWithIds.forEach(element => {
+            element.id = `${element.id}-${suffix}`;
+        });
+    }
+
+    // Monitor vertical scroll position and reset when needed
+    function addVerticalScrollMonitoring(contentArea, originalRows) {
+        let isResetting = false;
+        const originalRowCount = originalRows.length;
+
+        const handleInfiniteVerticalScroll = () => {
+            if (isResetting) return;
+
+            const scrollTop = contentArea.scrollTop;
+            const scrollHeight = contentArea.scrollHeight;
+            const clientHeight = contentArea.clientHeight;
+
+            // Calculate approximate height of one full set of rows
+            const singleSetHeight = calculateSingleSetHeight(originalRows);
+            const preCloneHeight = singleSetHeight; // Height of pre-cloned rows
+
+            // If scrolled too far down, reset to equivalent position at the top
+            if (scrollTop > preCloneHeight + (singleSetHeight * 2)) {
+                isResetting = true;
+                const excessScroll = scrollTop - (preCloneHeight + singleSetHeight);
+                const newPosition = preCloneHeight + (excessScroll % singleSetHeight);
+
+                contentArea.style.scrollBehavior = 'auto';
+                contentArea.scrollTop = newPosition;
+
+                setTimeout(() => {
+                    contentArea.style.scrollBehavior = '';
+                    isResetting = false;
+                }, 10);
+
+                console.log('🔄 Vertical infinite scroll: Reset from bottom to equivalent top position');
+            }
+
+            // If scrolled too far up, reset to equivalent position at the bottom
+            if (scrollTop < preCloneHeight * 0.3) {
+                isResetting = true;
+                const deficit = preCloneHeight - scrollTop;
+                const newPosition = preCloneHeight + singleSetHeight - (deficit % singleSetHeight);
+
+                contentArea.style.scrollBehavior = 'auto';
+                contentArea.scrollTop = newPosition;
+
+                setTimeout(() => {
+                    contentArea.style.scrollBehavior = '';
+                    isResetting = false;
+                }, 10);
+
+                console.log('🔄 Vertical infinite scroll: Reset from top to equivalent bottom position');
+            }
+        };
+
+        // Monitor scroll events
+        contentArea.addEventListener('scroll', handleInfiniteVerticalScroll);
+
+        // Store the handler for potential cleanup
+        contentArea._infiniteVerticalScrollHandler = handleInfiniteVerticalScroll;
+
+        // Set initial scroll position to show original rows
+        const preCloneHeight = calculateSingleSetHeight(originalRows);
+        contentArea.scrollTop = preCloneHeight;
+    }
+
+    // Calculate the total height of one complete set of rows
+    function calculateSingleSetHeight(originalRows) {
+        let totalHeight = 0;
+        originalRows.forEach(row => {
+            const style = window.getComputedStyle(row);
+            const marginTop = parseFloat(style.marginTop) || 0;
+            const marginBottom = parseFloat(style.marginBottom) || 0;
+            totalHeight += row.offsetHeight + marginTop + marginBottom;
+        });
+        return totalHeight;
+    }
+
+    // Update focus with infinite vertical scrolling awareness
+    function getActualRowIndex(currentRow) {
+        const contentArea = document.querySelector('.content-area');
+        const originalRowCount = parseInt(contentArea.getAttribute('data-original-row-count')) || 0;
+        
+        if (originalRowCount === 0) return currentContentRow;
+
+        // If it's a cloned row, map it back to the original index
+        if (currentRow.classList.contains('cloned-row')) {
+            const originalIndex = parseInt(currentRow.getAttribute('data-original-index')) || 0;
+            return originalIndex;
+        }
+
+        // For original rows, find their position among non-cloned rows
+        const originalRows = Array.from(contentArea.querySelectorAll('.content-row:not(.cloned-row)'));
+        return originalRows.indexOf(currentRow);
+    }
+
+    // Find equivalent row when moving up in infinite scroll
+    function findEquivalentRowUp(rows, originalRowCount) {
+        // We're at the top, so we want to move to the last visible set
+        // Find the last occurrence of the current row type
+        const currentLogicalRow = currentContentRow % originalRowCount;
+        const targetLogicalRow = (currentLogicalRow - 1 + originalRowCount) % originalRowCount;
+        
+        // Find the highest index row that matches our target
+        for (let i = rows.length - 1; i >= 0; i--) {
+            const row = rows[i];
+            const rowLogicalIndex = getLogicalRowIndex(row, originalRowCount, i);
+            if (rowLogicalIndex === targetLogicalRow) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Find equivalent row when moving down in infinite scroll
+    function findEquivalentRowDown(rows, originalRowCount) {
+        // We're at the bottom, so we want to move to the first visible set
+        // Find the first occurrence of the next row type
+        const currentLogicalRow = currentContentRow % originalRowCount;
+        const targetLogicalRow = (currentLogicalRow + 1) % originalRowCount;
+        
+        // Find the lowest index row that matches our target
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowLogicalIndex = getLogicalRowIndex(row, originalRowCount, i);
+            if (rowLogicalIndex === targetLogicalRow) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Get the logical row index (0 to originalRowCount-1) for any row
+    function getLogicalRowIndex(row, originalRowCount, physicalIndex) {
+        if (row.classList.contains('cloned-row')) {
+            return parseInt(row.getAttribute('data-original-index')) || 0;
+        } else {
+            // For original rows, calculate their logical position
+            const originalRows = Array.from(document.querySelector('.content-area').querySelectorAll('.content-row:not(.cloned-row)'));
+            const originalIndex = originalRows.indexOf(row);
+            return originalIndex >= 0 ? originalIndex : physicalIndex % originalRowCount;
+        }
+    }
+
     // Update focus visualization
     function updateFocus() {
         // Clear all focus states, focus titles, and row counters
@@ -348,9 +668,19 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebar.classList.add('collapsed');
             
             if (currentFocus === 'content') {
-                const rows = document.querySelectorAll('.content-row');
-                if (rows[currentContentRow]) {
-                    const contentGrid = rows[currentContentRow].querySelector('.content-grid');
+                const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
+                
+                // Ensure currentContentRow is within bounds
+                if (currentContentRow >= originalRows.length) {
+                    currentContentRow = Math.max(0, originalRows.length - 1);
+                }
+                if (currentContentRow < 0) {
+                    currentContentRow = 0;
+                }
+                
+                if (originalRows[currentContentRow]) {
+                    const currentRow = originalRows[currentContentRow];
+                    const contentGrid = currentRow.querySelector('.content-grid');
                     const originalCount = parseInt(contentGrid?.getAttribute('data-original-count') || 0);
                     
                     if (originalCount > 0) {
@@ -360,24 +690,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (targetItem) {
                             targetItem.classList.add('focused');
                             
-                            // Special handling for first tile (index 0) - keep it in place when transitioning from sidebar
-                            if (currentContentItem === 0) {
-                                // Don't scroll when focusing the first tile from sidebar transition
-                                // The first tile should stay in its current position
-                                console.log('🎯 Focusing first tile - staying in place');
-                            } else {
-                                // For other tiles, ensure optimal positioning
-                                const itemLeft = targetItem.offsetLeft;
-                                const gridWidth = contentGrid.clientWidth;
-                                const currentScrollLeft = contentGrid.scrollLeft;
-                                const optimalPosition = itemLeft - (gridWidth * 0.1);
-                                
-                                // Only scroll if the item isn't already well-positioned
-                                const currentItemPosition = itemLeft - currentScrollLeft;
-                                if (currentItemPosition < gridWidth * 0.05 || currentItemPosition > gridWidth * 0.8) {
-                                    contentGrid.scrollTo({ left: optimalPosition, behavior: 'smooth' });
-                                }
-                            }
+                            // Always snap focused item to the left edge of the viewport
+                            const itemLeft = targetItem.offsetLeft;
+                            console.log(`🎯 Snapping focused tile (index ${currentContentItem}) to left edge`);
+                            contentGrid.scrollTo({ left: itemLeft, behavior: 'smooth' });
                             
                             // Show content title between rows
                             showContentTitleBetweenRows(targetItem, currentContentRow);
@@ -387,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     } else {
                         // Fallback for non-infinite rows
-                        const items = rows[currentContentRow].querySelectorAll('.content-item');
+                        const items = currentRow.querySelectorAll('.content-item');
                         if (items[currentContentItem]) {
                             items[currentContentItem].classList.add('focused');
                             
@@ -404,9 +720,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                     
-                    // Scroll vertically to align the focused row to the top of the screen
+                    // Normal vertical scrolling
                     const contentArea = document.querySelector('.content-area');
-                    const currentRow = rows[currentContentRow];
                     if (contentArea && currentRow) {
                         currentRow.scrollIntoView({ 
                             behavior: 'smooth', 
@@ -422,8 +737,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add counter to the row title
     function addRowCounter(rowIndex) {
-        const rows = document.querySelectorAll('.content-row');
-        const currentRow = rows[rowIndex];
+        const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
+        const currentRow = originalRows[rowIndex];
         
         if (currentRow) {
             const rowTitle = currentRow.querySelector('.row-title');
@@ -457,8 +772,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function showContentTitleBetweenRows(contentItem, rowIndex) {
         const title = contentItem.querySelector('h3').textContent;
         const contentInfo = getContentInfo(contentItem);
-        const rows = document.querySelectorAll('.content-row');
-        const currentRow = rows[rowIndex];
+        const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
+        const currentRow = originalRows[rowIndex];
         
         if (currentRow) {
             // Add class to reduce margin on current row
@@ -671,18 +986,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentNavIndex--;
             }
         } else if (currentFocus === 'content') {
+            const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
+            
             if (currentContentRow > 0) {
                 currentContentRow--;
-                // Adjust content item index if new row has fewer items
-                const newRowItems = document.querySelectorAll('.content-row')[currentContentRow]?.querySelectorAll('.content-item');
-                if (newRowItems && currentContentItem >= newRowItems.length) {
-                    currentContentItem = newRowItems.length - 1;
-                }
-                
-                // Save the new position
-                lastContentRow = currentContentRow;
-                lastContentItem = currentContentItem;
+            } else {
+                // Wrap to last row (infinite scroll)
+                currentContentRow = originalRows.length - 1;
+                console.log('🔄 Simple infinite scroll: Wrapping from first row to last row');
             }
+            
+            // Ensure we don't go out of bounds
+            if (currentContentRow >= originalRows.length) {
+                currentContentRow = originalRows.length - 1;
+            }
+            if (currentContentRow < 0) {
+                currentContentRow = 0;
+            }
+            
+            // Move focus to the left-most visible tile in the target row
+            const targetRow = originalRows[currentContentRow];
+            const contentGrid = targetRow?.querySelector('.content-grid');
+            if (contentGrid) {
+                currentContentItem = findLeftMostVisibleItem(contentGrid);
+                console.log(`🎯 Arrow Up: Moving to left-most visible tile (index ${currentContentItem}) in row ${currentContentRow + 1}`);
+            } else {
+                currentContentItem = 0;
+            }
+            
+            // Save the new position
+            lastContentRow = currentContentRow;
+            lastContentItem = currentContentItem;
+            
+            console.log(`🎯 Arrow Up: Moving to row ${currentContentRow + 1} of ${originalRows.length}`);
         }
     }
 
@@ -692,19 +1028,39 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentNavIndex++;
             }
         } else if (currentFocus === 'content') {
-            const rows = document.querySelectorAll('.content-row');
-            if (currentContentRow < rows.length - 1) {
+            const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
+            
+            if (currentContentRow < originalRows.length - 1) {
                 currentContentRow++;
-                // Adjust content item index if new row has fewer items
-                const newRowItems = rows[currentContentRow]?.querySelectorAll('.content-item');
-                if (newRowItems && currentContentItem >= newRowItems.length) {
-                    currentContentItem = newRowItems.length - 1;
-                }
-                
-                // Save the new position
-                lastContentRow = currentContentRow;
-                lastContentItem = currentContentItem;
+            } else {
+                // Wrap to first row (infinite scroll)
+                currentContentRow = 0;
+                console.log('🔄 Simple infinite scroll: Wrapping from last row to first row');
             }
+            
+            // Ensure we don't go out of bounds
+            if (currentContentRow >= originalRows.length) {
+                currentContentRow = originalRows.length - 1;
+            }
+            if (currentContentRow < 0) {
+                currentContentRow = 0;
+            }
+            
+            // Move focus to the left-most visible tile in the target row
+            const targetRow = originalRows[currentContentRow];
+            const contentGrid = targetRow?.querySelector('.content-grid');
+            if (contentGrid) {
+                currentContentItem = findLeftMostVisibleItem(contentGrid);
+                console.log(`🎯 Arrow Down: Moving to left-most visible tile (index ${currentContentItem}) in row ${currentContentRow + 1}`);
+            } else {
+                currentContentItem = 0;
+            }
+            
+            // Save the new position
+            lastContentRow = currentContentRow;
+            lastContentItem = currentContentItem;
+            
+            console.log(`🎯 Arrow Down: Moving to row ${currentContentRow + 1} of ${originalRows.length}`);
         }
     }
 
@@ -926,7 +1282,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateRowTitlesForSection(section) {
         switch(section) {
             case 'Home':
-                updateRowTitles(['Featured Content', 'Continue Watching', 'Popular Movies']);
+                updateRowTitles(['Featured Movies', 'Continue Watching', 'Popular TV Shows']);
                 break;
             case 'Movies':
                 updateRowTitles(['Latest Movies', 'Classic Films', 'Independent Cinema']);
@@ -947,7 +1303,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateRowTitles(['Search Results', 'Popular Searches', 'Trending Now']);
                 break;
             default:
-                updateRowTitles(['Featured Movies', 'Popular TV Shows', 'Action & Adventure']);
+                updateRowTitles(['Featured Movies', 'Continue Watching', 'Popular TV Shows']);
         }
     }
 
@@ -962,6 +1318,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize content item listeners
     addContentItemListeners();
+
+    // Auto-replace Continue Watching row with large 16:9 tiles
+    setTimeout(() => {
+        replaceContinueWatchingWithLargeTiles();
+    }, 1000); // Wait 1 second for page to fully load
 
     // Add smooth scrolling for content area
     function smoothScroll(element, to, duration) {
@@ -988,6 +1349,68 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Helper functions for infinite carousel
+    function findLeftMostVisibleItem(contentGrid) {
+        if (!contentGrid) return 0;
+        
+        const allItems = Array.from(contentGrid.querySelectorAll('.content-item'));
+        const gridScrollLeft = contentGrid.scrollLeft;
+        const originalCount = parseInt(contentGrid.getAttribute('data-original-count') || 0);
+        
+        // Since focused items always snap to the left edge, the left-most visible item 
+        // is the one that starts at or very close to the current scroll position
+        for (let i = 0; i < allItems.length; i++) {
+            const item = allItems[i];
+            const itemLeft = item.offsetLeft;
+            
+            // Find the item that is positioned at the left edge (within a small tolerance)
+            if (Math.abs(itemLeft - gridScrollLeft) < 5) {
+                // For infinite carousel, get the original index
+                if (originalCount > 0) {
+                    if (item.classList.contains('cloned')) {
+                        return parseInt(item.getAttribute('data-original-index') || 0);
+                    } else {
+                        const originalItems = contentGrid.querySelectorAll('.content-item:not(.cloned)');
+                        return Array.from(originalItems).indexOf(item);
+                    }
+                } else {
+                    // For non-infinite rows, return the actual index
+                    return i;
+                }
+            }
+        }
+        
+        // Fallback: find the first visible item (closest to scroll position)
+        let closestItem = null;
+        let closestDistance = Infinity;
+        
+        for (let i = 0; i < allItems.length; i++) {
+            const item = allItems[i];
+            const itemLeft = item.offsetLeft;
+            const distance = Math.abs(itemLeft - gridScrollLeft);
+            
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestItem = item;
+            }
+        }
+        
+        if (closestItem) {
+            if (originalCount > 0) {
+                if (closestItem.classList.contains('cloned')) {
+                    return parseInt(closestItem.getAttribute('data-original-index') || 0);
+                } else {
+                    const originalItems = contentGrid.querySelectorAll('.content-item:not(.cloned)');
+                    return Array.from(originalItems).indexOf(closestItem);
+                }
+            } else {
+                return Array.from(allItems).indexOf(closestItem);
+            }
+        }
+        
+        // Final fallback to first item
+        return 0;
+    }
+    
     function findBestVisibleItem(contentGrid, originalIndex) {
         if (!contentGrid) return null;
         
@@ -1030,17 +1453,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!contentGrid || !targetItem) return;
         
         const itemLeft = targetItem.offsetLeft;
-        const gridWidth = contentGrid.clientWidth;
         
-        let targetScrollPosition;
-        
-        if (snapToStart || originalIndex === 0) {
-            // Snap to start position - align the focused tile to the beginning of the row
-            targetScrollPosition = itemLeft;
-        } else {
-            // Position item at 10% from left edge for optimal viewing
-            targetScrollPosition = itemLeft - (gridWidth * 0.1);
-        }
+        // Always snap focused item to the left edge of the viewport
+        const targetScrollPosition = itemLeft;
         
         // Smooth scroll to the target position
         contentGrid.scrollTo({ 
@@ -1048,7 +1463,7 @@ document.addEventListener('DOMContentLoaded', function() {
             behavior: 'smooth' 
         });
         
-        console.log(`🔄 Infinite carousel: Navigated to item ${originalIndex + 1} of ${originalCount}${snapToStart ? ' (snapped to start)' : ''}`);
+        console.log(`🔄 Infinite carousel: Navigated to item ${originalIndex + 1} of ${originalCount} (snapped to left edge)`);
     }
 
     // Add time update functionality
@@ -1197,9 +1612,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show keyboard instructions
     console.log(`
-    🎮 ENHANCED KEYBOARD CONTROLS WITH INFINITE CAROUSEL:
-    ==================================================
-    ↑↓ Arrow Keys: Navigate up/down in sidebar or content rows
+    🎮 ENHANCED KEYBOARD CONTROLS WITH INFINITE NAVIGATION:
+    =====================================================
+    ↑↓ Arrow Keys: Navigate up/down with infinite row wrapping
     ←→ Arrow Keys: Navigate left/right in infinite content tiles
     Enter/Space: Select item
     Escape/Backspace: Go back to sidebar
@@ -1209,11 +1624,13 @@ document.addEventListener('DOMContentLoaded', function() {
     F2: Info panel
     F3: Go to Search
     
-    🔄 INFINITE CAROUSEL FEATURES:
-    • Seamless tile navigation with no endpoints
+    🔄 INFINITE NAVIGATION FEATURES:
+    • Horizontal: Seamless tile navigation with no endpoints
+    • Vertical: Simple row navigation that wraps at boundaries
     • After the last tile, continues with the first tile infinitely
-    • Smooth scrolling with automatic position optimization
-    • Visual indicator shows "∞" for infinite rows
+    • From the last row, pressing down goes to the first row
+    • From the first row, pressing up goes to the last row
+    • Focus management works reliably with original content
     `);
 
     function initializeSearchInterface() {
@@ -1434,4 +1851,432 @@ document.addEventListener('DOMContentLoaded', function() {
                 break;
         }
     }
+
+    // Tile Component System
+    
+    /**
+     * Creates a tile component with specified type and size
+     * @param {string} type - The aspect ratio type: "promo", "21:9", "16:9", "4:3", "2:3"
+     * @param {string} size - The size variant: "small", "medium", "large"
+     * @param {Object} content - Content object with title, image, etc.
+     * @param {Object} options - Additional options (continueWatching, progress, etc.)
+     * @returns {HTMLElement} The tile element
+     */
+    function createTile(type, size, content = {}, options = {}) {
+        // Validate inputs
+        const validTypes = ['promo', '21:9', '16:9', '4:3', '2:3'];
+        const validSizes = ['small', 'medium', 'large'];
+        
+        if (!validTypes.includes(type)) {
+            console.warn(`Invalid tile type: ${type}. Using default "16:9"`);
+            type = '16:9';
+        }
+        
+        if (!validSizes.includes(size)) {
+            console.warn(`Invalid tile size: ${size}. Using default "medium"`);
+            size = 'medium';
+        }
+        
+        // Special handling for types that don't support all sizes
+        if (type === 'promo' && !['small', 'large'].includes(size)) {
+            size = 'large'; // Default promo to large
+        }
+        
+        if (type === '4:3' && size !== 'small') {
+            size = 'small'; // 4:3 only supports small
+        }
+        
+        // Create the tile element
+        const tile = document.createElement('div');
+        
+        // Add base classes
+        tile.className = 'tile-component content-item';
+        
+        // Add type and size specific class
+        const typeClass = type.replace(':', '-'); // Convert "16:9" to "16-9"
+        tile.classList.add(`tile-${typeClass}-${size}`);
+        
+        // Add continue watching class if specified
+        if (options.continueWatching) {
+            tile.classList.add('continue-watching');
+        }
+        
+        // Set default content if not provided
+        const tileContent = {
+            title: content.title || 'Sample Content',
+            subtitle: content.subtitle || '',
+            image: content.image || '',
+            alt: content.alt || content.title || 'Content thumbnail',
+            ...content
+        };
+        
+        // Create tile HTML structure
+        let tileHTML = '';
+        
+        if (tileContent.image) {
+            tileHTML += `<img src="${tileContent.image}" alt="${tileContent.alt}" class="tile-image">`;
+        } else {
+            // Create a gradient placeholder if no image
+            tileHTML += `<div class="tile-image" style="background: linear-gradient(45deg, #8B5A9B, #A066B0, #B573C4);"></div>`;
+        }
+        
+        // Add overlay with title and subtitle
+        tileHTML += `
+            <div class="tile-overlay">
+                <h3 class="tile-title">${tileContent.title}</h3>
+                ${tileContent.subtitle ? `<p class="tile-subtitle">${tileContent.subtitle}</p>` : ''}
+            </div>
+        `;
+        
+        // Add progress bar for continue watching tiles
+        if (options.continueWatching && options.progress !== undefined) {
+            tileHTML += `
+                <div class="progress-bar-container">
+                    <div class="progress-bar" data-progress="${options.progress}" style="width: ${options.progress}%;"></div>
+                </div>
+            `;
+        }
+        
+        tile.innerHTML = tileHTML;
+        
+        // Add event listeners
+        addTileEventListeners(tile);
+        
+        return tile;
+    }
+    
+    /**
+     * Creates a grid of tiles with mixed types and sizes
+     * @param {Array} tileConfigs - Array of tile configuration objects
+     * @returns {HTMLElement} The grid container element
+     */
+    function createTileGrid(tileConfigs) {
+        const grid = document.createElement('div');
+        grid.className = 'content-grid';
+        
+        tileConfigs.forEach(config => {
+            const tile = createTile(
+                config.type || '16:9',
+                config.size || 'medium',
+                config.content || {},
+                config.options || {}
+            );
+            grid.appendChild(tile);
+        });
+        
+        return grid;
+    }
+    
+    /**
+     * Creates a complete content row with tiles
+     * @param {string} title - Row title
+     * @param {Array} tileConfigs - Array of tile configurations
+     * @returns {HTMLElement} The complete row element
+     */
+    function createTileRow(title, tileConfigs) {
+        const row = document.createElement('div');
+        row.className = 'content-row';
+        
+        // Create row title
+        const rowTitle = document.createElement('div');
+        rowTitle.className = 'row-title';
+        rowTitle.textContent = title;
+        
+        // Create tile grid
+        const grid = createTileGrid(tileConfigs);
+        
+        row.appendChild(rowTitle);
+        row.appendChild(grid);
+        
+        return row;
+    }
+    
+    /**
+     * Add event listeners to a tile
+     * @param {HTMLElement} tile - The tile element
+     */
+    function addTileEventListeners(tile) {
+        // Click handler
+        tile.addEventListener('click', function() {
+            const title = this.querySelector('.tile-title');
+            console.log('Tile clicked:', title ? title.textContent : 'Unknown');
+            
+            // Add any custom click logic here
+            if (this.classList.contains('continue-watching')) {
+                console.log('Continue watching content clicked');
+            }
+        });
+        
+        // Hover handlers for non-touch devices
+        if (!('ontouchstart' in window)) {
+            tile.addEventListener('mouseenter', function() {
+                this.classList.add('hover');
+            });
+            
+            tile.addEventListener('mouseleave', function() {
+                this.classList.remove('hover');
+            });
+        }
+        
+        // Keyboard navigation support
+        tile.addEventListener('focus', function() {
+            this.classList.add('focused');
+        });
+        
+        tile.addEventListener('blur', function() {
+            this.classList.remove('focused');
+        });
+    }
+    
+    /**
+     * Utility function to get tile dimensions for a given type and size
+     * @param {string} type - The aspect ratio type
+     * @param {string} size - The size variant
+     * @returns {Object} Object with width and height properties
+     */
+    function getTileDimensions(type, size) {
+        const dimensions = {
+            'promo': {
+                'small': { width: 343, height: 51 },
+                'large': { width: 319, height: 116 }
+            },
+            '21:9': {
+                'small': { width: 206, height: 88 },
+                'medium': { width: 278, height: 119 },
+                'large': { width: 423, height: 182 }
+            },
+            '16:9': {
+                'small': { width: 206, height: 116 },
+                'medium': { width: 278, height: 156 },
+                'large': { width: 423, height: 237 }
+            },
+            '4:3': {
+                'small': { width: 162, height: 122 }
+            },
+            '2:3': {
+                'small': { width: 133, height: 200 },
+                'medium': { width: 162, height: 243 },
+                'large': { width: 206, height: 309 }
+            }
+        };
+        
+        return dimensions[type]?.[size] || dimensions['16:9']['medium'];
+    }
+    
+    /**
+     * Demo function to create sample tile layouts
+     */
+    function createSampleTileLayouts() {
+        const contentArea = document.querySelector('.content-area');
+        if (!contentArea) return;
+        
+        // Clear existing content for demo
+        contentArea.innerHTML = '';
+        
+        // Sample content data
+        const sampleContent = [
+            { title: 'The Mandalorian', subtitle: 'Action • Sci-Fi', image: '' },
+            { title: 'Stranger Things', subtitle: 'Thriller • Sci-Fi', image: '' },
+            { title: 'The Crown', subtitle: 'Drama • Biography', image: '' },
+            { title: 'Breaking Bad', subtitle: 'Crime • Drama', image: '' },
+            { title: 'Friends', subtitle: 'Comedy • Romance', image: '' },
+            { title: 'Game of Thrones', subtitle: 'Fantasy • Drama', image: '' },
+            { title: 'The Office', subtitle: 'Comedy • Workplace', image: '' },
+            { title: 'Black Mirror', subtitle: 'Sci-Fi • Anthology', image: '' }
+        ];
+        
+        // Create rows with different tile configurations
+        
+        // Row 1: Mixed 16:9 tiles
+        const row1Config = [
+            { type: '16:9', size: 'large', content: sampleContent[0] },
+            { type: '16:9', size: 'medium', content: sampleContent[1] },
+            { type: '16:9', size: 'small', content: sampleContent[2] },
+            { type: '16:9', size: 'medium', content: sampleContent[3] },
+            { type: '16:9', size: 'large', content: sampleContent[4] }
+        ];
+        const row1 = createTileRow('Featured Movies & Shows', row1Config);
+        contentArea.appendChild(row1);
+        
+        // Row 2: Continue Watching with progress bars
+        const row2Config = [
+            { 
+                type: '16:9', 
+                size: 'medium', 
+                content: sampleContent[0], 
+                options: { continueWatching: true, progress: 65 }
+            },
+            { 
+                type: '16:9', 
+                size: 'medium', 
+                content: sampleContent[1], 
+                options: { continueWatching: true, progress: 23 }
+            },
+            { 
+                type: '16:9', 
+                size: 'medium', 
+                content: sampleContent[2], 
+                options: { continueWatching: true, progress: 89 }
+            },
+            { 
+                type: '16:9', 
+                size: 'medium', 
+                content: sampleContent[3], 
+                options: { continueWatching: true, progress: 45 }
+            }
+        ];
+        const row2 = createTileRow('Continue Watching', row2Config);
+        contentArea.appendChild(row2);
+        
+        // Row 3: Mixed aspect ratios showcase
+        const row3Config = [
+            { type: 'promo', size: 'large', content: { title: 'Special Promotion', subtitle: 'Limited Time' } },
+            { type: '21:9', size: 'medium', content: sampleContent[5] },
+            { type: '4:3', size: 'small', content: sampleContent[6] },
+            { type: '2:3', size: 'large', content: sampleContent[7] },
+            { type: '21:9', size: 'small', content: sampleContent[0] }
+        ];
+        const row3 = createTileRow('Mixed Layout Showcase', row3Config);
+        contentArea.appendChild(row3);
+        
+        // Re-initialize focus and event listeners
+        ensureMinimumItemsPerRow();
+        currentContentRow = 0;
+        currentContentItem = 0;
+        updateFocus();
+        
+        console.log('🎬 Created sample tile layouts with different aspect ratios and sizes');
+    }
+    
+    // Expose tile creation functions globally for easy access
+    window.TileComponent = {
+        createTile,
+        createTileGrid,
+        createTileRow,
+        getTileDimensions,
+        createSampleTileLayouts
+    };
+    
+    // Uncomment the next line to automatically create sample layouts on page load
+    // createSampleTileLayouts();
+    
+    // Function to replace Continue Watching row with medium 16:9 tiles
+    function replaceContinueWatchingWithLargeTiles() {
+        const continueWatchingRow = document.querySelector('.continue-watching-row');
+        if (!continueWatchingRow) {
+            console.log('Continue Watching row not found');
+            return;
+        }
+        
+        // Define the Continue Watching content with medium 16:9 tiles
+        const continueWatchingConfig = [
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'Stranger Things',
+                    subtitle: 'S4 E7 • 42 min left',
+                    image: 'https://image.tmdb.org/t/p/w500/4EYPN5mVIhKLfxGruy7Dy41dTVn.jpg',
+                    alt: 'Stranger Things'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 65
+                }
+            },
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'Game of Thrones',
+                    subtitle: 'S1 E3 • 51 min left',
+                    image: 'https://image.tmdb.org/t/p/w500/1BIoJGKbXP6oFzwzqYgxuBvQMgm.jpg',
+                    alt: 'Game of Thrones'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 23
+                }
+            },
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'Breaking Bad',
+                    subtitle: 'S2 E12 • 8 min left',
+                    image: 'https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg',
+                    alt: 'Breaking Bad'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 88
+                }
+            },
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'Top Gun: Maverick',
+                    subtitle: '1h 18min left',
+                    image: 'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
+                    alt: 'Top Gun: Maverick'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 45
+                }
+            },
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'The Office',
+                    subtitle: 'S3 E14 • 19 min left',
+                    image: 'https://image.tmdb.org/t/p/w500/6tfT03sGp9k4c0J3dypjrI8TSAI.jpg',
+                    alt: 'The Office'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 12
+                }
+            },
+            {
+                type: '16:9',
+                size: 'medium',
+                content: {
+                    title: 'Avengers: Infinity War',
+                    subtitle: '38 min left',
+                    image: 'https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg',
+                    alt: 'Avengers: Infinity War'
+                },
+                options: {
+                    continueWatching: true,
+                    progress: 76
+                }
+            }
+        ];
+        
+        // Create the new Continue Watching row with medium tiles
+        const newContinueWatchingRow = TileComponent.createTileRow('Continue Watching', continueWatchingConfig);
+        
+        // Add the continue-watching-row class to maintain styling compatibility
+        newContinueWatchingRow.classList.add('continue-watching-row');
+        
+        // Replace the old row with the new one
+        continueWatchingRow.parentNode.replaceChild(newContinueWatchingRow, continueWatchingRow);
+        
+        // Re-initialize the infinite carousel for the new row
+        ensureMinimumItemsPerRow();
+        
+        console.log('✅ Continue Watching row updated to use medium 16:9 tiles');
+        
+        return newContinueWatchingRow;
+    }
+    
+    // Expose the function globally for easy access
+    window.replaceContinueWatchingWithLargeTiles = replaceContinueWatchingWithLargeTiles;
+    
+    console.log('🧩 Tile Component System Initialized');
+    console.log('Available functions: TileComponent.createTile(), TileComponent.createTileGrid(), TileComponent.createTileRow()');
+    console.log('Run TileComponent.createSampleTileLayouts() to see examples');
 });
