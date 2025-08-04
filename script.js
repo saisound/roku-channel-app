@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const contentArea = document.querySelector('.content-area');
     
     // Focus management
-    let currentFocus = 'sidebar'; // 'sidebar' or 'content'
+    let currentFocus = 'content'; // 'sidebar' or 'content' - Start with content focused
     let currentNavIndex = 1; // Start with Home (second item)
     let currentPageNavIndex = 1; // Track the current page/section (persists when focus moves to content)
     let currentContentRow = 0;
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let searchQuery = '';
     let currentKeyboardRow = 0;
     let currentKeyboardCol = 0;
-    let searchFocus = 'keyboard'; // 'keyboard' or 'results'
+    let searchFocus = 'textbox'; // 'textbox', 'keyboard' or 'results'
     
     const keyboardLayout = [
         ['a', 'b', 'c', 'd', 'e', 'f'],
@@ -34,7 +34,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add focus indicators
     addFocusStyles();
 
-    // Initialize focus
+    // Initialize focus - start with content focused and sidebar collapsed
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar) {
+        sidebar.classList.add('collapsed');
+    }
     updateFocus();
 
     // Initialize progress bars
@@ -669,6 +673,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Update content based on the focused navigation item
                 const sectionName = navItem.querySelector('span').textContent;
+                
+                // If Search is focused, show search interface but keep focus on sidebar
+                if (sectionName === 'Search') {
+                    // Don't change currentFocus yet - keep it as 'sidebar'
+                    // The search interface will load but focus stays on Search nav item
+                }
+                
                 updateContentForNavigation(sectionName);
             }
         } else {
@@ -922,7 +933,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     handleSearchNavigation('down');
                     break;
                 case 'ArrowLeft':
-                    handleSearchNavigation('left');
+                    // If on textbox, move back to Search navigation
+                    if (searchFocus === 'textbox') {
+                        currentFocus = 'sidebar';
+                        currentNavIndex = 0; // Search is the first nav item
+                        updateFocus();
+                    } else {
+                        handleSearchNavigation('left');
+                    }
                     break;
                 case 'ArrowRight':
                     handleSearchNavigation('right');
@@ -933,14 +951,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'Escape':
                 case 'Backspace':
-                    // Exit search mode
+                    // Exit search mode - return to Search navigation item
                     currentFocus = 'sidebar';
+                    currentNavIndex = 0; // Search is the first nav item
                     updateFocus();
-                    // Switch back to Home
-                    const homeNav = document.querySelector('.nav-item:nth-child(2)');
-                    if (homeNav) {
-                        homeNav.click();
-                    }
                     break;
             }
             return;
@@ -993,6 +1007,36 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentNavIndex > 0) {
                 currentNavIndex--;
             }
+        } else if (currentFocus === 'search') {
+            // Handle search interface navigation
+            if (searchFocus === 'keyboard') {
+                // Check if we're at the top row of keyboard
+                if (currentKeyboardRow === 0) {
+                    // Move back to text box
+                    searchFocus = 'textbox';
+                    
+                    // Remove focus from all keyboard buttons
+                    document.querySelectorAll('.key-btn').forEach(btn => btn.classList.remove('focused'));
+                    
+                    // Restore focus to text box and show cursor
+                    const searchInput = document.querySelector('.search-input');
+                    const searchCursor = document.querySelector('.search-cursor');
+                    
+                    if (searchInput) {
+                        searchInput.focus(); // Restore focus to text input
+                    }
+                    
+                    if (searchCursor) {
+                        searchCursor.classList.add('active'); // Show text cursor
+                    }
+                    
+                    console.log('🔼 Moving focus from keyboard back to text box');
+                } else {
+                    // Handle keyboard navigation up
+                    handleSearchNavigation('up');
+                }
+            }
+            // If already on textbox, do nothing (can't go further up)
         } else if (currentFocus === 'content') {
             const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
             
@@ -1035,6 +1079,32 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentNavIndex < navItems.length - 1) {
                 currentNavIndex++;
             }
+        } else if (currentFocus === 'search') {
+            // Handle search interface navigation
+            if (searchFocus === 'textbox') {
+                // Move from text box to first keyboard key
+                searchFocus = 'keyboard';
+                currentKeyboardRow = 0;
+                currentKeyboardCol = 0;
+                
+                // Remove focus from text box and hide cursor when moving to keyboard
+                const searchInput = document.querySelector('.search-input');
+                const searchCursor = document.querySelector('.search-cursor');
+                
+                if (searchInput) {
+                    searchInput.blur(); // Remove focus from text input
+                }
+                
+                if (searchCursor) {
+                    searchCursor.classList.remove('active'); // Hide text cursor
+                }
+                
+                updateKeyboardFocus();
+                console.log('🔽 Moving focus from text box to keyboard');
+            } else if (searchFocus === 'keyboard') {
+                // Handle keyboard navigation down
+                handleSearchNavigation('down');
+            }
         } else if (currentFocus === 'content') {
             const originalRows = document.querySelectorAll('.content-row:not(.cloned-row)');
             
@@ -1073,7 +1143,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleArrowLeft() {
-        if (currentFocus === 'content') {
+        if (currentFocus === 'search') {
+            // Handle search interface navigation
+            if (searchFocus === 'keyboard') {
+                // Handle keyboard navigation left
+                handleSearchNavigation('left');
+            }
+            // If on textbox, do nothing (can't go further left)
+        } else if (currentFocus === 'content') {
             // If on first tile, move focus back to sidebar (left navigation)
             if (currentContentItem === 0) {
                 // Save the current position before moving to sidebar
@@ -1118,7 +1195,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleArrowRight() {
         if (currentFocus === 'sidebar') {
-            // Move to content area
+            const navItem = navItems[currentNavIndex];
+            const sectionName = navItem ? navItem.querySelector('span').textContent : '';
+            
+            // Special handling for Search - move focus to text box only
+            if (sectionName === 'Search') {
+                currentFocus = 'search';
+                searchFocus = 'textbox'; // Start with text box focused
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.add('collapsed'); // Collapse sidebar for search mode
+                
+                // Enable search interface elements when entering search mode
+                const searchInput = document.querySelector('.search-input');
+                const searchCursor = document.querySelector('.search-cursor');
+                
+                if (searchInput) {
+                    searchInput.focus();
+                }
+                
+                if (searchCursor) {
+                    searchCursor.classList.add('active');
+                }
+                
+                // Do NOT focus keyboard initially - user must press Down to get to keyboard
+                // Remove any existing keyboard focus
+                document.querySelectorAll('.key-btn').forEach(btn => btn.classList.remove('focused'));
+                
+                return;
+            }
+            
+            // For other navigation items, move to content area
             currentFocus = 'content';
             
             // Restore the last focused content position
@@ -1126,6 +1232,13 @@ document.addEventListener('DOMContentLoaded', function() {
             currentContentItem = lastContentItem;
             
             console.log(`🔄 Restoring focus to Row ${currentContentRow + 1}, Item ${currentContentItem + 1}`);
+        } else if (currentFocus === 'search') {
+            // Handle search interface navigation
+            if (searchFocus === 'keyboard') {
+                // Handle keyboard navigation right
+                handleSearchNavigation('right');
+            }
+            // If on textbox, do nothing (can't go further right)
         } else if (currentFocus === 'content') {
             const currentRow = document.querySelectorAll('.content-row')[currentContentRow];
             const contentGrid = currentRow?.querySelector('.content-grid');
@@ -1162,6 +1275,35 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentFocus === 'sidebar') {
             const navItem = navItems[currentNavIndex];
             if (navItem) {
+                const sectionName = navItem.querySelector('span').textContent;
+                
+                // Special handling for Search - move focus to text box only
+                if (sectionName === 'Search') {
+                    currentFocus = 'search';
+                    searchFocus = 'textbox'; // Start with text box focused
+                    const sidebar = document.querySelector('.sidebar');
+                    sidebar.classList.add('collapsed'); // Collapse sidebar for search mode
+                    
+                    // Enable search interface elements when entering search mode
+                    const searchInput = document.querySelector('.search-input');
+                    const searchCursor = document.querySelector('.search-cursor');
+                    
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                    
+                    if (searchCursor) {
+                        searchCursor.classList.add('active');
+                    }
+                    
+                    // Do NOT focus keyboard initially - user must press Down to get to keyboard
+                    // Remove any existing keyboard focus
+                    document.querySelectorAll('.key-btn').forEach(btn => btn.classList.remove('focused'));
+                    
+                    updateFocus();
+                    return;
+                }
+                
                 navItem.click();
             }
         } else if (currentFocus === 'content') {
@@ -1233,6 +1375,18 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update current section
         currentSection = section;
         
+        // Add loading effect to make it look like new content is loading
+        const contentArea = document.querySelector('.content-area');
+        if (contentArea) {
+            // Dim the content to show loading state
+            contentArea.style.opacity = '0.3';
+            
+            // Restore opacity after a short delay to simulate loading
+            setTimeout(() => {
+                contentArea.style.opacity = '1';
+            }, 150);
+        }
+        
         const rowTitles = document.querySelectorAll('.row-title');
         const searchPage = document.querySelector('.search-page');
         const homeContent = document.querySelector('.home-content');
@@ -1248,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (searchPage && homeContent) {
                 searchPage.style.display = 'block';
                 homeContent.style.display = 'none';
-                initializeSearchInterface();
+                initializeSearchInterface(false, false, false); // Don't auto-focus input, show cursor, or focus keyboard when loading from nav selection
                 return;
             }
         } else {
@@ -1279,10 +1433,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Update content for navigation focus changes (without changing page state)
     function updateContentForNavigation(section) {
-        // Only update if we're not in search mode
+        // Add loading effect to make it look like new content is loading
+        const contentArea = document.querySelector('.content-area');
+        if (contentArea) {
+            // Dim the content to show loading state
+            contentArea.style.opacity = '0.3';
+            
+            // Restore opacity after a short delay to simulate loading
+            setTimeout(() => {
+                contentArea.style.opacity = '1';
+            }, 150);
+        }
+        
+        // Handle Search section - show search interface immediately when focused
+        if (section === 'Search') {
+            const searchPage = document.querySelector('.search-page');
+            const homeContent = document.querySelector('.home-content');
+            
+            if (searchPage && homeContent) {
+                searchPage.style.display = 'block';
+                homeContent.style.display = 'none';
+                initializeSearchInterface(false, false, false); // Don't auto-focus input, show cursor, or focus keyboard when loading from nav
+                
+                // Update page indicator
+                const pageIndicator = document.querySelector('.page-indicator');
+                if (pageIndicator) {
+                    pageIndicator.textContent = `• ${section}`;
+                }
+                return;
+            }
+        }
+        
+        // Only update other sections if we're not in search mode
         const searchPage = document.querySelector('.search-page');
         if (searchPage && searchPage.style.display !== 'none') {
-            return;
+            // If we're moving away from search, hide search page and show home content
+            const homeContent = document.querySelector('.home-content');
+            if (homeContent) {
+                searchPage.style.display = 'none';
+                homeContent.style.display = 'block';
+            }
         }
         
         // Update page indicator
@@ -1542,30 +1732,10 @@ document.addEventListener('DOMContentLoaded', function() {
     updateTime();
     
     // Search interface functions
-    function initializeSearchInterface() {
-        const keys = document.querySelectorAll('.key');
-        const searchInput = document.querySelector('.search-input');
-        const sidebar = document.querySelector('.sidebar');
-        
-        currentFocus = 'search';
-        currentSearchRow = 0;
-        currentSearchCol = 0;
-        
-        // Collapse sidebar when entering search mode
-        sidebar.classList.add('collapsed');
-        
-        // Focus first key
-        if (keys.length > 0) {
-            // Clear any existing focus
-            keys.forEach(key => key.classList.remove('focused'));
-            keys[0].classList.add('focused');
-        }
-    }
-
     function getKeyAt(row, col) {
         const keyboardRows = document.querySelectorAll('.keyboard-row');
         if (row >= 0 && row < keyboardRows.length) {
-            const keys = keyboardRows[row].querySelectorAll('.key');
+            const keys = keyboardRows[row].querySelectorAll('.key-btn');
             if (col >= 0 && col < keys.length) {
                 return keys[col];
             }
@@ -1575,7 +1745,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function handleSearchNavigation(direction) {
         const keyboardRows = document.querySelectorAll('.keyboard-row');
-        const currentKey = getKeyAt(currentSearchRow, currentSearchCol);
+        const currentKey = getKeyAt(currentKeyboardRow, currentKeyboardCol);
         
         if (currentKey) {
             currentKey.classList.remove('focused');
@@ -1583,27 +1753,57 @@ document.addEventListener('DOMContentLoaded', function() {
         
         switch (direction) {
             case 'left':
-                currentSearchCol = Math.max(0, currentSearchCol - 1);
+                // If at leftmost key, move back to Search navigation
+                if (currentKeyboardCol === 0) {
+                    currentFocus = 'sidebar';
+                    currentNavIndex = 0; // Search is the first nav item
+                    updateFocus();
+                    return;
+                }
+                currentKeyboardCol = Math.max(0, currentKeyboardCol - 1);
                 break;
             case 'right':
-                const currentRowKeys = keyboardRows[currentSearchRow]?.querySelectorAll('.key').length || 0;
-                currentSearchCol = Math.min(currentRowKeys - 1, currentSearchCol + 1);
+                const currentRowKeys = keyboardRows[currentKeyboardRow]?.querySelectorAll('.key-btn').length || 0;
+                currentKeyboardCol = Math.min(currentRowKeys - 1, currentKeyboardCol + 1);
                 break;
             case 'up':
-                currentSearchRow = Math.max(0, currentSearchRow - 1);
+                // If at top row, move back to textbox
+                if (currentKeyboardRow === 0) {
+                    searchFocus = 'textbox';
+                    
+                    // Remove focus from all keyboard buttons
+                    document.querySelectorAll('.key-btn').forEach(btn => btn.classList.remove('focused'));
+                    
+                    // Restore focus to text box and show cursor
+                    const searchInput = document.querySelector('.search-input');
+                    const searchCursor = document.querySelector('.search-cursor');
+                    
+                    if (searchInput) {
+                        searchInput.focus(); // Restore focus to text input
+                    }
+                    
+                    if (searchCursor) {
+                        searchCursor.classList.add('active'); // Show text cursor
+                    }
+                    
+                    console.log('🔼 Moving focus from keyboard back to text box');
+                    return;
+                }
+                
+                currentKeyboardRow = Math.max(0, currentKeyboardRow - 1);
                 // Adjust column if new row has fewer keys
-                const prevRowKeys = keyboardRows[currentSearchRow]?.querySelectorAll('.key').length || 0;
-                currentSearchCol = Math.min(currentSearchCol, prevRowKeys - 1);
+                const prevRowKeys = keyboardRows[currentKeyboardRow]?.querySelectorAll('.key-btn').length || 0;
+                currentKeyboardCol = Math.min(currentKeyboardCol, prevRowKeys - 1);
                 break;
             case 'down':
-                currentSearchRow = Math.min(keyboardRows.length - 1, currentSearchRow + 1);
+                currentKeyboardRow = Math.min(keyboardRows.length - 1, currentKeyboardRow + 1);
                 // Adjust column if new row has fewer keys
-                const nextRowKeys = keyboardRows[currentSearchRow]?.querySelectorAll('.key').length || 0;
-                currentSearchCol = Math.min(currentSearchCol, nextRowKeys - 1);
+                const nextRowKeys = keyboardRows[currentKeyboardRow]?.querySelectorAll('.key-btn').length || 0;
+                currentKeyboardCol = Math.min(currentKeyboardCol, nextRowKeys - 1);
                 break;
         }
         
-        const newKey = getKeyAt(currentSearchRow, currentSearchCol);
+        const newKey = getKeyAt(currentKeyboardRow, currentKeyboardCol);
         if (newKey) {
             newKey.classList.add('focused');
             newKey.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1611,7 +1811,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleKeyInput() {
-        const currentKey = getKeyAt(currentSearchRow, currentSearchCol);
+        const currentKey = getKeyAt(currentKeyboardRow, currentKeyboardCol);
         const searchInput = document.querySelector('.search-input');
         
         if (!currentKey || !searchInput) return;
@@ -1693,26 +1893,39 @@ document.addEventListener('DOMContentLoaded', function() {
     • Focus management works reliably with original content
     `);
 
-    function initializeSearchInterface() {
+    function initializeSearchInterface(autoFocus = true, showCursor = true, focusKeyboard = true) {
         console.log('Initializing search interface');
         searchQuery = '';
         currentKeyboardRow = 0;
         currentKeyboardCol = 0;
-        searchFocus = 'keyboard';
+        searchFocus = 'textbox'; // Start with text box focused
         
         const searchInput = document.querySelector('.search-input');
         const searchCursor = document.querySelector('.search-cursor');
         
         if (searchInput) {
             searchInput.value = '';
-            searchInput.focus();
+            if (autoFocus) {
+                searchInput.focus();
+            }
         }
         
         if (searchCursor) {
-            searchCursor.classList.add('active');
+            if (showCursor) {
+                searchCursor.classList.add('active');
+            } else {
+                searchCursor.classList.remove('active');
+            }
         }
         
-        updateKeyboardFocus();
+        if (focusKeyboard) {
+            updateKeyboardFocus();
+            searchFocus = 'keyboard'; // Override to keyboard if we're focusing it
+        } else {
+            // Remove focus from all keyboard buttons
+            document.querySelectorAll('.key-btn').forEach(btn => btn.classList.remove('focused'));
+        }
+        
         setupSearchKeyboardListeners();
     }
 
