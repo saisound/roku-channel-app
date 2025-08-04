@@ -324,10 +324,9 @@ body {
 
 .row-title {
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 20px;
-    color: #FFFFFF;
-    opacity: 0.9;
+    color: #efefef;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -561,6 +560,31 @@ body {
     box-shadow: 0 4px 12px rgba(188, 33, 69, 0.6);
 }
 
+/* Premium Badge Styles */
+.premium-badge {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    display: inline-flex;
+    height: 36px;
+    padding: 0 8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    background: rgba(11, 0, 27, 0.8);
+    color: #2EC890;
+    font-size: 16px;
+    font-weight: 700;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(11, 0, 27, 0.4);
+    transition: all 0.3s ease;
+}
+
+.premium-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(11, 0, 27, 0.6);
+}
+
 /* Content Focus Title Styles */
 .content-focus-title {
     display: flex;
@@ -579,17 +603,17 @@ body {
 }
 
 .title-text {
-    font-size: 33px;
+    font-size: 28px;
     font-weight: 700;
-    color: #FFFFFF;
+    color: #efefef;
     margin-bottom: 8px;
     text-align: left;
 }
 
 .details-text {
-    font-size: 33px;
+    font-size: 28px;
     font-weight: 400;
-    color: #B8B8B8;
+    color: #efefef;
     text-align: left;
 }
 
