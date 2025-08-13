@@ -1,0 +1,112 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f5f5f5; /* Light background for contrast */
+}
+
+.header {
+    background-color: #6f2c91; /* Roku's purple color */
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-image {
+    height: 40px; /* Adjust logo size */
+}
+
+.main-content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 250px; /* Fixed width for sidebar */
+    background-color: #4b2c6f; /* Darker purple for sidebar */
+    color: white;
+    padding: 1rem;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect */
+}
+
+.content-area {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-row {
+    margin-bottom: 2rem;
+}
+
+.row-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #6f2c91; /* Title color */
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.content-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.content-item:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.poster-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.content-item:hover .content-overlay {
+    opacity: 1; /* Show overlay on hover */
+}
+
+.premium-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ffcc00; /* Premium badge color */
+    color: black;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}

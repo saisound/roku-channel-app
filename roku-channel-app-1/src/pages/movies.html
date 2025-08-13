@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies - Roku Channel</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../components/header/header.css">
+    <link rel="stylesheet" href="../components/sidebar/sidebar.css">
+    <link rel="stylesheet" href="../components/home-screen/home-screen.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="../../assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+                <span class="page-indicator">• Movies</span>
+            </div>
+            <div class="header-info">
+                <span class="options">
+                    <img src="../../assets/icons/options.png" alt="Options" class="options-icon">
+                    for Options
+                </span>
+                <span class="divider">•</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/search-normal.png" alt="Search" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/search-active.png" alt="Search" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Search</span>
+                </li>
+                <li class="nav-item active">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/home-normal.png" alt="Home" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/home-active.png" alt="Home" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Home</span>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/movies-normal.png" alt="Movies" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/movies-active.png" alt="Movies" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Movies</span>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/tvseries-normal.png" alt="TV Series" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/tvseries-active.png" alt="TV Series" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>TV Series</span>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/livetv-normal.png" alt="Live TV" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/livetv-active.png" alt="Live TV" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Live TV</span>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/premium-normal.png" alt="Premium" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/premium-active.png" alt="Premium" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Premium</span>
+                </li>
+                <li class="nav-item">
+                    <div class="nav-icon">
+                        <img src="../../assets/icons/kidsandfamily-normal.png" alt="Kids & Family" class="nav-icon-img nav-icon-normal">
+                        <img src="../../assets/icons/kidsandfamily-active.png" alt="Kids & Family" class="nav-icon-img nav-icon-active">
+                    </div>
+                    <span>Kids & Family</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Movies Content Area -->
+        <div class="content-area">
+            <h2 class="row-title">Featured Movies</h2>
+            <div class="content-grid">
+                <!-- Movie items will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/main.js"></script>
+    <script src="../components/header/header.js"></script>
+    <script src="../components/sidebar/sidebar.js"></script>
+</body>
+</html>

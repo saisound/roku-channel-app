@@ -1,0 +1,49 @@
+/roku-channel-app/roku-channel-app/src/components/sidebar/sidebar.css
+
+.sidebar {
+    background-color: #5c4d8a; /* Roku's purple color */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-icon {
+    margin-right: 10px;
+}
+
+.nav-icon-img {
+    width: 24px;
+    height: 24px;
+}
+
+.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+}

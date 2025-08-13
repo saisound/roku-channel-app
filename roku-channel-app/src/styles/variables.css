@@ -1,0 +1,19 @@
+:root {
+    --primary-color: #6a0dad; /* Roku's purple color */
+    --secondary-color: #e0e0e0; /* Light gray for backgrounds */
+    --text-color: #ffffff; /* White text color */
+    --accent-color: #ffcc00; /* Accent color for highlights */
+    
+    --font-family: 'Arial', sans-serif; /* Default font family */
+    --font-size-small: 0.875rem; /* Small font size */
+    --font-size-medium: 1rem; /* Medium font size */
+    --font-size-large: 1.25rem; /* Large font size */
+    
+    --spacing-small: 0.5rem; /* Small spacing */
+    --spacing-medium: 1rem; /* Medium spacing */
+    --spacing-large: 1.5rem; /* Large spacing */
+    
+    --border-radius: 0.25rem; /* Border radius for rounded corners */
+    
+    --transition-speed: 0.3s; /* Transition speed for animations */
+}

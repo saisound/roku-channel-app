@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roku Channel - Apps & Inputs</title>
+  <style>
+    /* Font declarations */
+    @font-face {
+      font-family: 'RokuUI';
+      src: url('assets/fonts/RokuUI-Regular.vfc') format('vfc');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'RokuUI';
+      src: url('assets/fonts/RokuUI-Medium.vfc') format('vfc');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'RokuUI';
+      src: url('assets/fonts/RokuUI-Bold.vfc') format('vfc');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'RokuUI', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: url('assets/trc-background.png') center center/cover no-repeat, linear-gradient(135deg, #4A1A5C 0%, #2D0B3D 100%);
+      color: #FFFFFF;
+      overflow-x: hidden;
+      height: 100vh;
+    }
+
+    .app-container {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header styles */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-image {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .page-title {
+      color: #FFFFFF;
+      font-size: 36px;
+      font-weight: 400;
+    }
+
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .options {
+      color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .divider {
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+    }
+
+    .time {
+      color: #FFFFFF;
+      font-weight: 500;
+    }
+
+    /* Main content layout */
+    .main-content {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 80px);
+      padding: 40px;
+      gap: 40px;
+    }
+
+    /* Apps section */
+    .apps-section {
+      flex: 2;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 30px;
+      color: #FFFFFF;
+    }
+
+    .navigation-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      z-index: 10;
+      transition: background 0.2s ease;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-arrow.left {
+      left: -25px;
+    }
+
+    .nav-arrow.right {
+      right: -25px;
+    }
+
+    .apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .app-tile {
+      aspect-ratio: 16/9;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: white;
+      border: 3px solid transparent;
+    }
+
+    .app-tile:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(255, 255, 255, 0.2);
+    }
+
+    .app-tile.focused {
+      border-color: #FFFFFF;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .app-tile.sling {
+      border-color: #FFA500;
+    }
+
+    /* Featured content */
+    .featured-section {
+      flex: none;
+      width: 525px;
+      height: 735px;
+    }
+
+    .featured-content {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 0;
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+      border: 3px solid #0080FF;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .featured-image {
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      background: linear-gradient(45deg, #FFD700, #FFA500, #FF4500);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .sports-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #FFD700 0%, #FFA500 50%, #FF4500 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+    }
+
+    .sports-logos {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .team-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 12px;
+    }
+
+    .match-info {
+      margin-bottom: 15px;
+    }
+
+    .match-time {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .match-teams {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .tournament-info {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .featured-meta {
+      padding: 20px;
+      background: #0080FF;
+      color: white;
+      text-align: center;
+    }
+
+    .paramount-logo {
+      font-size: 24px;
+      font-weight: bold;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+
+    .watch-live-btn {
+      background: white;
+      color: #0080FF;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .watch-live-btn:hover {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo-section">
+        <img src="assets/trc-logo.png" alt="Roku" class="logo-image" />
+        <span class="page-title">Title</span>
+      </div>
+      <div class="header-info">
+        <span class="options">✱ for Options</span>
+        <span class="divider">•</span>
+        <span class="time" id="current-time">12:00 pm</span>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <div class="main-content">
+      <!-- Apps section -->
+      <div class="apps-section">
+        <div class="navigation-container">
+          <button class="nav-arrow left">‹</button>
+          <h2 class="section-title">Apps & Inputs</h2>
+        </div>
+        
+        <div class="apps-grid">
+          <!-- Row 1 -->
+          <div class="app-tile" style="background: #E50914;">
+            <span style="font-size: 24px; font-weight: bold;">NETFLIX</span>
+          </div>
+          <div class="app-tile" style="background: #00A8E1;">
+            <span style="font-size: 18px; font-weight: bold;">prime<br>video</span>
+          </div>
+          <div class="app-tile" style="background: #1CE783;">
+            <span style="font-size: 28px; font-weight: bold;">hulu</span>
+          </div>
+          <div class="app-tile sling" style="background: #003366;">
+            <span style="font-size: 24px; font-weight: bold; color: white;">sling</span>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="app-tile" style="background: #000000;">
+            <span style="font-size: 18px; font-weight: bold;">HBO<br>max</span>
+          </div>
+          <div class="app-tile roku-channel" style="background: linear-gradient(45deg, #7540C4, #FFFFFF); color: #7540C4; border: 3px solid #7540C4;" data-app="roku-channel">
+            <span style="font-size: 16px; font-weight: bold;">Roku<br>Channel</span>
+          </div>
+          <div class="app-tile" style="background: linear-gradient(45deg, #11B7EE, #1976D2);">
+            <span style="font-size: 20px; font-weight: bold;">Disney+</span>
+          </div>
+          <div class="app-tile" style="background: #000000;">
+            <span style="font-size: 20px; font-weight: bold;">Apple tv</span>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="app-tile" style="background: #FFFFFF; color: #FF0000;">
+            <span style="font-size: 18px; font-weight: bold;">📺 YouTube</span>
+          </div>
+          <div class="app-tile" style="background: #FFD700; color: #0066CC;">
+            <span style="font-size: 16px; font-weight: bold;">PBS<br>KIDS</span>
+          </div>
+          <div class="app-tile" style="background: #000000;">
+            <span style="font-size: 24px; font-weight: bold;">TNT</span>
+          </div>
+          <div class="app-tile" style="background: #001F3F;">
+            <span style="font-size: 18px; font-weight: bold;">peacock</span>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="app-tile" style="background: #6B46C1;">
+            <span style="font-size: 16px; font-weight: bold;">📺 tubi<br><span style="font-size: 12px;">FREE MOVIES & TV</span></span>
+          </div>
+          <div class="app-tile" style="background: #FF4500;">
+            <span style="font-size: 16px; font-weight: bold;">📺 fubo<br><span style="font-size: 12px;">LIVE TV & SPORTS</span></span>
+          </div>
+          <div class="app-tile" style="background: #FFFFFF; color: #FF0000;">
+            <span style="font-size: 20px; font-weight: bold;">ESPN</span>
+          </div>
+          <div class="app-tile" style="background: #0060A9;">
+            <span style="font-size: 16px; font-weight: bold;">📺 CBS<br>SPORTS</span>
+          </div>
+
+          <!-- Row 5 -->
+          <div class="app-tile" style="background: #CC0000; color: white;">
+            <span style="font-size: 18px; font-weight: bold;">📺</span>
+          </div>
+          <div class="app-tile" style="background: linear-gradient(45deg, #FF6B35, #F7931E, #4285F4, #34A853, #FBBC05, #EA4335);">
+            <span style="font-size: 18px; font-weight: bold;">📺</span>
+          </div>
+          <div class="app-tile" style="background: #0080FF;">
+            <span style="font-size: 16px; font-weight: bold;">People<br>TV</span>
+          </div>
+          <div class="app-tile" style="background: #FF4500;">
+            <span style="font-size: 14px; font-weight: bold;">MOTORTREND</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Featured content sidebar -->
+      <div class="featured-section">
+        <div class="featured-content">
+          <div class="featured-image">
+            <div class="sports-content">
+              <div class="sports-logos">
+                <div class="team-logo" style="background: #FFD700; color: #000;">VIL</div>
+                <div class="team-logo" style="background: #FF0000; color: #FFF;">MAN</div>
+              </div>
+              <div class="match-info">
+                <div class="match-time">TODAY<br>3PM ET</div>
+                <div class="match-teams">VILLARREAL<br>VS<br>MAN UNITED</div>
+              </div>
+              <div class="tournament-info">
+                <div style="font-size: 12px;">🏆 UEFA SPORTS</div>
+                <div style="font-size: 16px; font-weight: bold; margin-top: 5px;">UEFA<br>EUROPA<br>LEAGUE</div>
+                <div style="font-size: 12px; margin-top: 5px;">GDANSK<br>FINAL 2021</div>
+              </div>
+            </div>
+          </div>
+          <div class="featured-meta">
+            <div class="paramount-logo">Paramount+</div>
+            <button class="watch-live-btn">WATCH LIVE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Update time
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+      document.getElementById('current-time').textContent = timeString;
+    }
+
+    // Update time immediately and then every minute
+    updateTime();
+    setInterval(updateTime, 60000);
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      const focusableElements = document.querySelectorAll('.app-tile, .nav-arrow, .watch-live-btn');
+      const currentFocus = document.activeElement;
+      const currentIndex = Array.from(focusableElements).indexOf(currentFocus);
+
+      switch(e.key) {
+        case 'ArrowRight':
+          e.preventDefault();
+          if (currentIndex < focusableElements.length - 1) {
+            focusableElements[currentIndex + 1].focus();
+          }
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          if (currentIndex > 0) {
+            focusableElements[currentIndex - 1].focus();
+          }
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          // Navigate down in grid
+          const gridCols = 4;
+          if (currentIndex + gridCols < focusableElements.length) {
+            focusableElements[currentIndex + gridCols].focus();
+          }
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          // Navigate up in grid
+          const gridColsUp = 4;
+          if (currentIndex - gridColsUp >= 0) {
+            focusableElements[currentIndex - gridColsUp].focus();
+          }
+          break;
+        case 'Enter':
+          e.preventDefault();
+          // Check if the focused element is the Roku Channel tile
+          if (currentFocus.classList.contains('roku-channel') || currentFocus.dataset.app === 'roku-channel') {
+            window.location.href = 'index.html';
+          } else {
+            currentFocus.click();
+          }
+          break;
+      }
+    });
+
+    // Make elements focusable and add focus styles
+    document.querySelectorAll('.app-tile, .nav-arrow, .watch-live-btn').forEach(el => {
+      el.setAttribute('tabindex', '0');
+      el.addEventListener('focus', function() {
+        this.classList.add('focused');
+      });
+      el.addEventListener('blur', function() {
+        this.classList.remove('focused');
+      });
+    });
+
+    // Set initial focus
+    document.querySelector('.app-tile').focus();
+
+    // Navigation arrows functionality
+    document.querySelector('.nav-arrow.left').addEventListener('click', function() {
+      // Simulate scrolling left through apps
+      console.log('Navigate left');
+    });
+
+    // Add click handler for Roku Channel tile
+    document.querySelector('.roku-channel').addEventListener('click', function() {
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>

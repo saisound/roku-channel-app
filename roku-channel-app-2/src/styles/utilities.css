@@ -1,0 +1,94 @@
+/roku-channel-app/roku-channel-app/src/styles/utilities.css
+
+/* Utility classes for common styles and layout adjustments */
+
+/* Flexbox utilities */
+.flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+/* Margin and Padding utilities */
+.m-0 {
+    margin: 0;
+}
+
+.m-1 {
+    margin: 0.25rem;
+}
+
+.m-2 {
+    margin: 0.5rem;
+}
+
+.p-0 {
+    padding: 0;
+}
+
+.p-1 {
+    padding: 0.25rem;
+}
+
+.p-2 {
+    padding: 0.5rem;
+}
+
+/* Text utilities */
+.text-center {
+    text-align: center;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+/* Visibility utilities */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+/* Background utilities */
+.bg-purple {
+    background-color: var(--purple);
+}
+
+.bg-violet {
+    background-color: var(--violet);
+}
+
+/* Border utilities */
+.border {
+    border: 1px solid #ccc;
+}
+
+.rounded {
+    border-radius: 0.25rem;
+}
+
+/* Transition utilities */
+.transition {
+    transition: all 0.3s ease;
+}

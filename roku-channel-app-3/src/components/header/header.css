@@ -1,0 +1,61 @@
+.header {
+    background-color: var(--purple);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    height: 40px;
+    width: auto;
+}
+
+.page-indicator {
+    margin-left: 10px;
+    font-size: 1.2rem;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.options-icon {
+    height: 20px;
+    width: auto;
+    margin-right: 5px;
+}
+
+.divider {
+    margin: 0 10px;
+}
+
+.time {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-info {
+        margin-top: 10px;
+    }
+}

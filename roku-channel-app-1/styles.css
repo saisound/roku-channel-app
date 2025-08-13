@@ -1,0 +1,107 @@
+:root {
+    --primary-color: #6a0dad; /* Roku purple */
+    --secondary-color: #e0e0e0; /* Light gray for backgrounds */
+    --text-color: #ffffff; /* White text */
+    --accent-color: #ffcc00; /* Accent color for highlights */
+    --spacing-unit: 16px; /* Base spacing unit */
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    background-color: var(--primary-color);
+    padding: var(--spacing-unit);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-image {
+    height: 40px;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-unit);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.content-area {
+    flex: 1;
+    padding: var(--spacing-unit);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-unit);
+}
+
+.content-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    transition: transform 0.3s;
+}
+
+.content-item:hover {
+    transform: scale(1.05);
+}
+
+.poster-image {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.content-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.content-item:hover .content-overlay {
+    opacity: 1;
+}
+
+.row-title {
+    margin: 0;
+    padding: var(--spacing-unit) 0;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.premium-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}

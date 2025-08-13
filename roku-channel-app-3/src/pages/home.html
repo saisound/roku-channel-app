@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Roku Channel</title>
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../components/home-screen/home-screen.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header Component -->
+        <header class="header">
+            <!-- Include header component here -->
+            <div class="logo">
+                <img src="../assets/trc-logo.png" alt="The Roku Channel" class="logo-image">
+                <span class="page-indicator">• Home</span>
+            </div>
+            <div class="header-info">
+                <span class="options">
+                    <img src="../assets/icons/options.png" alt="Options" class="options-icon">
+                    for Options
+                </span>
+                <span class="divider">•</span>
+                <span class="time">12:00 pm</span>
+            </div>
+        </header>
+
+        <!-- Sidebar Navigation Component -->
+        <nav class="sidebar">
+            <!-- Include sidebar component here -->
+            <ul class="nav-menu">
+                <li class="nav-item"><span>Search</span></li>
+                <li class="nav-item active"><span>Home</span></li>
+                <li class="nav-item"><span>Movies</span></li>
+                <li class="nav-item"><span>TV Series</span></li>
+                <li class="nav-item"><span>Live TV</span></li>
+                <li class="nav-item"><span>Premium</span></li>
+                <li class="nav-item"><span>Kids & Family</span></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <h1>Welcome to The Roku Channel</h1>
+            <div class="content-grid">
+                <!-- Featured Content and Categories will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/main.js"></script>
+    <script src="../components/home-screen/home-screen.js"></script>
+</body>
+</html>
