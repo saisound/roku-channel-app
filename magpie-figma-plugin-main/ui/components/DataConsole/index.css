@@ -1,0 +1,64 @@
+.data-console {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  background: #4b484f;
+  overflow: scroll;
+
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.25px;
+  color: white;
+  font-weight: 500;
+  white-space: pre-line;
+}
+
+.data-console-header {
+  position: sticky;
+  top: 0;
+  background: #4b484f;
+  z-index: 100;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.data-console-header button {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+  background: #7540c4;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 10px;
+  cursor: pointer;
+  border: 1px solid white;
+  border-left: none;
+}
+
+.data-console-header button:hover {
+  background: #5a309a;
+}
+
+.data-console-header h1 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.data-console-content {
+  margin: 12px 20px;
+}
+
+.data-console-content p {
+  margin-bottom: 16px;
+}

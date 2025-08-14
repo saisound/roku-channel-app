@@ -1,0 +1,42 @@
+{
+  "name": "magpie",
+  "version": "1.0.0",
+  "description": "Your Figma Plugin",
+  "main": "code.js",
+  "scripts": {
+    "build:plugin": "cd plugin && vite build",
+    "build:plugin:watch": "cd plugin && vite build --watch",
+    "dev:ui": "cd ui && vite",
+    "build:ui": "cd ui && vite build",
+    "build:ui:watch": "cd ui && vite build --watch",
+    "build": "npm run build:plugin & npm run build:ui",
+    "watch": "npm run build:plugin:watch & npm run build:ui:watch"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@babel/core": "^7.18.13",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@figma/plugin-typings": "*",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.10.3",
+    "@roku-uxe-kit/rk-streaming-data-api": "^1.10.0",
+    "@roku-web-ui/rds-fonts": "^2.0.5",
+    "@types/lodash.debounce": "^4.0.7",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.0.1",
+    "framer-motion": "^7.5.2",
+    "localforage": "^1.10.0",
+    "localforage-memoryStorageDriver": "^0.9.2",
+    "lodash.debounce": "^4.0.8",
+    "object-hash": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hotkeys-hook": "^3.4.7",
+    "typescript": "*",
+    "vite": "^3.0.9",
+    "vite-plugin-singlefile": "^0.11.1"
+  }
+}

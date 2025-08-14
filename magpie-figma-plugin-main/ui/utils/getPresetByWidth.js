@@ -1,0 +1,72 @@
+// see https://confluence.portal.roku.com:8443/display/SR/Image+Processing+Service#ImageProcessingService-Presets
+// these presets have quality set to 90
+
+const presetsByMaxWidth = [
+  [50, "80e711dd6a89fb4dbea6af2d5a9cdfa8"],
+  [100, "083db83b9dac3b77c4c4fc632305f2e5"],
+  [150, "ab94d1c1a8ade4aac623dc06ee4140f0"],
+  [200, "ec0a4bc8d0e6d5fecf82e135c901b507"],
+  [250, "0b6d8f1a6b204b3716568dde8d1453c0"],
+  [300, "b28f0d74526fa9d1f35216078108f40e"],
+  [350, "271d44513b2886e169a55f5350b9f333"],
+  [400, "dba0cf2024d8ac12af60ffab2b97e88c"],
+  [450, "ab08757b00c0024734d1699471487dd5"],
+  [500, "6e222ec5c6f96ab44189b43a06c71e00"],
+  [550, "e2096e388fdbd8baa15efed0778d035b"],
+  [600, "089740bb80ad339bdf6c67527b93ce99"],
+  [650, "bf48f14ffc8938cf699323d977378eea"],
+  [700, "384b148335d1448160f2fbd44b24f201"],
+  [750, "608f879e8f09a5e142e7bdf115bd81c6"],
+  [800, "59da22a10f451cbee2ebbf7a543128e6"],
+  [850, "f24f68ca1710c6870a635dd040c56831"],
+  [900, "fcd4488c2eb172daa339bc7701cbe301"],
+  [950, "c95d976bc68178228d8d5df5bbb3feeb"],
+  [1000, "b90d50dce1627a018eb16b54b99ad233"],
+  [1050, "8ae50c97d0089a83f789d0e8d22da38e"],
+  [1100, "2b2aa4ad296665ac9ff3934b59ad5294"],
+  [1150, "4c0751db4ad34a8e8582f9471d0fc9b7"],
+  [1200, "09262a34ae0117d48e1484983925a3e1"],
+  [1250, "661f0a7d6e319d2ab867f50906a737ef"],
+  [1280, "b4de5de6c8b2554d8b8ea605afcb9c2a"],
+  [1300, "fcb7d86f10317ef76ab50d7e63543e99"],
+  [1350, "d8ddc30379dd9925274401a08bd6a1d2"],
+  [1400, "25d1ee8aa5210f256945b60aff6daceb"],
+  [1450, "85913a331a50cf3615af4d0804a4fc55"],
+  [1500, "22e350b85a66188bd58ea52f9b08f90f"],
+  [1550, "416ff801851d6bb256378a977ceedc89"],
+  [1600, "5f5e8d1b8f9343962792b6454bbd31ea"],
+  [1650, "5e1ff2fc4e109968082fb4392d81f509"],
+  [1700, "a8eee0e9ddfcfc89ff7a8543c4aedb3b"],
+  [1750, "8f1daa45b64b612c1f60ae289279669d"],
+  [1800, "c40f33e5ca2748468bfad8875ed9a240"],
+  [1850, "f5df348a4ea84065af332f3f135490c1"],
+  [1900, "31a608539e704366051d1c10cd2d0ba7"],
+  [1920, "a55ed5504acb6998a21a1db7ff203a73"],
+  [2000, "58beebc51df9405d8e674ed3dae1ac87"],
+  [2100, "e2068f46da7e5a238f40f810c80acf2c"],
+  [2200, "27cb6d0127a462d8582ef6bf03633cf2"],
+  [2300, "5cd10e6bc571b12c903125b954ced3e9"],
+  [2400, "03969fbd5b30d10bd64083db63359ffd"],
+  [2500, "0a8cf07c609e86ac819cb29a26bb0da1"],
+  [2600, "af94a07b4669977a220ddd877005d242"],
+  [2700, "316e02a72a9c998a4d3f38058aeab0f4"],
+  [2800, "e9ff0dd123e45d71face0591e0637266"],
+  [2900, "7fc689b6b2e948b53b8d23bf118ea18f"],
+  [3000, "2351576435c4c6180d9b7a9ee10aca13"],
+  [3100, "bf24b085630fc4749874dacbc24cdef7"],
+  [3200, "d92fb8d0d19ad651ff446eebd3a1acc7"],
+  [3300, "11cf74f19ad346fa73a0fd8f07f5baef"],
+  [3400, "b84bc4a7f6044fbb601d09e4dce92d82"],
+  [3500, "f6d3b71cf1bbb6c88234d70440e9fc57"],
+  [3600, "33b01cc80e1048b575f1a689b8501e99"],
+  [3700, "49e0dc18e300188ea20bdef43bac6ae0"],
+  [3800, "356414825606284aabaf278cd0a1b4a9"],
+];
+
+const getPresetByWidth = (width) => {
+  const preset = presetsByMaxWidth.find(([presetWidth]) => width <= presetWidth);
+  return preset ? preset[1] : null;
+};
+
+export default getPresetByWidth;
+  

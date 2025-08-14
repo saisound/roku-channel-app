@@ -1,0 +1,163 @@
+.image-tile {
+  position: relative;
+  background: #6A479D
+}
+
+.image-tile img {
+  object-fit: scale-down;
+  width: 100%;
+  height: 100%;
+  background: #d8d8d8;
+  border-radius: 2px;
+  box-shadow: var(--shadow-elevation-low);
+}
+
+.image-tile img.blinking {
+  animation: blink-tile .8s linear;
+}
+
+@keyframes blink-tile {
+  0% {
+    mix-blend-mode: overlay;
+  }
+
+  25% {
+    mix-blend-mode: unset;
+  }
+
+  35% {
+    mix-blend-mode: overlay;
+  }
+
+  100% {
+    mix-blend-mode: unset;
+  }
+}
+
+.image-tile.expanded img {
+  box-shadow: 0 0 0 3px #191919, inset 0 0 0 1px #191919;
+  border-radius: 4px;
+}
+
+.image-tile.expanded::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  width: 0;
+  height: 0;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-top: 12px solid #000;
+  clear: both;
+  z-index: 1;
+}
+
+
+.image-tile:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+.image-tile p.image-tile-title {
+  position: absolute;
+  background: black;
+  color: white;
+  padding: 3px 5px 5px 5px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.image-tile .show-more-button {
+  transition: all 0.15s ease-in-out;
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  padding: 0 8px;
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 24px;
+  color: #FFFFFF;
+  background: #7540C4;
+  border-radius: 3px;
+  border: none;
+  opacity: 0;
+}
+
+.image-tile.expanded .show-more-button {
+  opacity: 1;
+  background: #1A1A1A;
+}
+
+.image-tile.expanded .show-more-button:hover {
+  background: #000000;
+}
+
+.image-tile:hover .show-more-button {
+  opacity: 1;
+}
+
+.image-tile .show-more-button:hover {
+  background: #5a309a;
+}
+
+.image-tile .view-details-button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 28px;
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+  display: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.image-tile:hover .view-details-button {
+  display: block;
+}
+
+.image-tile .view-details-button:hover {
+  background: rgba(0, 0, 0, .8);
+}
+
+.image-tile .image-tile-type {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  background: rgba(0,0,0,.66);
+  color: white;
+  font-size: 12px;
+  padding: 0 4px;
+  display: none;
+  pointer-events: none;
+}
+.image-tile:hover .image-tile-type {
+  display: block;
+}
+
+.view-more-images-panel .image-tile .view-details-button {
+  display: none;
+}

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "target": "es6",
+    "lib": [
+      "es6",
+      "dom",
+      "es2017"
+    ],
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma",
+    ],
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+  }
+}

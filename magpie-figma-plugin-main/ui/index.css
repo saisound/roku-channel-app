@@ -1,0 +1,155 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+#root {
+  isolation: isolate;
+}
+
+/* 
+  Typography - Using @roku-web-ui/rds-fonts package
+*/
+
+/* 
+  Page styling 
+*/
+
+:root {
+  font-family: RokuText, Inter, Avenir, Helvetica, Arial, sans-serif;
+  --outer-margins: 12px;
+  --shadow-color: 0deg 0% 65%;
+  --shadow-elevation-low:
+    0px 0.5px 0.7px hsl(var(--shadow-color) / 0.12),
+    0px 0.9px 1.3px -0.4px hsl(var(--shadow-color) / 0.32),
+    0px 2.1px 2.9px -0.7px hsl(var(--shadow-color) / 0.52);
+  --shadow-elevation-medium:
+    0px 0.3px 0.4px hsl(var(--shadow-color) / 0.2),
+    0px 1px 1.2px -0.5px hsl(var(--shadow-color) / 0.23),
+    0px 1.8px 2.2px -0.9px hsl(var(--shadow-color) / 0.25),
+    0px 3.4px 4.1px -1.4px hsl(var(--shadow-color) / 0.28),
+    0px 6.4px 7.8px -1.9px hsl(var(--shadow-color) / 0.3);
+}
+
+/* Error State Layout */
+.error-state-container {
+  height: calc(100vh - 120px);
+  min-height: 300px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.search {
+  margin: 12px var(--outer-margins) 4px;
+}
+.search .row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.columns.two {
+  margin: 0 var(--outer-margins);
+  padding-bottom: var(--outer-margins);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.view-more-images-panel {
+  grid-column-end: span 2;
+  margin: -4px -12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px;
+  background: #888;
+}
+
+.view-more-images-panel .image-tile img {
+  height: auto;
+  box-shadow: none;
+  border-radius: 0;
+  border: none;
+  background: none;
+}
+
+/* Random Button Styling */
+.random-button-container {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.random-button {
+  background: #6200ee;
+  width: 100%;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.random-button:hover {
+  background: #3700b3;
+}
+
+.random-button:active {
+  background: #2e00a0;
+}
+
+.random-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Magpie Artwork Search",
+  "id": "1146312321451782185",
+  "api": "1.0.0",
+  "main": "dist/plugin.mjs",
+  "editorType": ["figma"],
+  "ui": "dist/index.html",
+  "documentAccess": "dynamic-page",
+  "relaunchButtons": [
+    {"command": "relaunch", "name": "Magpie Artwork Search"}
+  ]}
