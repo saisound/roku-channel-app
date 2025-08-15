@@ -43,6 +43,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize progress bars
     initializeProgressBars();
+    
+    // Ensure progress bars are visible after a longer delay (redundant safety check)
+    setTimeout(() => {
+        initializeProgressBars();
+        console.log('🔄 Secondary progress bar initialization complete');
+    }, 3000);
 
     // Ensure all rows have exactly 10 items
     ensureMinimumItemsPerRow();
@@ -133,10 +139,23 @@ document.addEventListener('DOMContentLoaded', function() {
             
             .content-item.focused {
                 border: 4px solid #FFFFFF !important;
-                border-radius: 0 !important;
+                border-radius: 8px !important;
                 transition: all 0.2s ease;
                 z-index: 10;
                 position: relative;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.3) !important;
+            }
+            
+            /* Stronger focus styles for continue watching tiles */
+            .continue-watching-row .tile-component.focused,
+            .continue-watching-row .content-item.focused {
+                border: 4px solid #FFFFFF !important;
+                border-radius: 8px !important;
+                transition: all 0.2s ease !important;
+                z-index: 20 !important;
+                position: relative !important;
+                box-shadow: 0 0 25px rgba(255, 255, 255, 0.6) !important;
+                transform: scale(1.02) !important;
             }
         `;
         document.head.appendChild(style);
@@ -146,13 +165,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function initializeProgressBars() {
         const progressBars = document.querySelectorAll('.progress-bar');
         
-        // Animate progress bars on load
+        // Reset progress bars to 0% width first
+        progressBars.forEach(bar => {
+            bar.style.width = '0%';
+        });
+        
+        // Animate progress bars on load with a longer delay to ensure they stay visible
         setTimeout(() => {
             progressBars.forEach(bar => {
                 const progress = bar.getAttribute('data-progress') || 0;
                 bar.style.width = `${progress}%`;
+                console.log(`🔄 Progress bar animated to ${progress}%`);
             });
-        }, 500); // Delay to allow for page load
+        }, 1500); // Increased delay to ensure bars remain visible after page load
+        
+        console.log(`📊 Initialized ${progressBars.length} progress bars`);
     }
 
     // Ensure all content rows have exactly 10 items and create infinite carousel
@@ -709,6 +736,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (targetItem) {
                             targetItem.classList.add('focused');
                             
+                            // Add extra debugging for continue watching tiles
+                            if (targetItem.classList.contains('continue-watching')) {
+                                console.log('🎯 Focusing continue watching tile:', targetItem);
+                                console.log('🎯 Tile classes:', targetItem.className);
+                                console.log('🎯 Computed border:', window.getComputedStyle(targetItem).border);
+                                
+                                // Force the focus styles with a slight delay
+                                setTimeout(() => {
+                                    targetItem.style.border = '4px solid #FFFFFF';
+                                    targetItem.style.borderRadius = '8px';
+                                    targetItem.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.6)';
+                                    targetItem.style.transform = 'scale(1.02)';
+                                    targetItem.style.zIndex = '20';
+                                    console.log('🎯 Applied manual focus styles to continue watching tile');
+                                }, 100);
+                            }
+                            
                             // Always snap focused item to the left edge of the viewport
                             const itemLeft = targetItem.offsetLeft;
                             console.log(`🎯 Snapping focused tile (index ${currentContentItem}) to left edge`);
@@ -725,6 +769,23 @@ document.addEventListener('DOMContentLoaded', function() {
                         const items = currentRow.querySelectorAll('.content-item');
                         if (items[currentContentItem]) {
                             items[currentContentItem].classList.add('focused');
+                            
+                            // Add extra debugging for continue watching tiles
+                            const focusedItem = items[currentContentItem];
+                            if (focusedItem.classList.contains('continue-watching')) {
+                                console.log('🎯 Focusing continue watching tile (fallback):', focusedItem);
+                                console.log('🎯 Tile classes:', focusedItem.className);
+                                
+                                // Force the focus styles with a slight delay
+                                setTimeout(() => {
+                                    focusedItem.style.border = '4px solid #FFFFFF';
+                                    focusedItem.style.borderRadius = '8px';
+                                    focusedItem.style.boxShadow = '0 0 25px rgba(255, 255, 255, 0.6)';
+                                    focusedItem.style.transform = 'scale(1.02)';
+                                    focusedItem.style.zIndex = '20';
+                                    console.log('🎯 Applied manual focus styles to continue watching tile (fallback)');
+                                }, 100);
+                            }
                             
                             // Snap-to-start scrolling logic for non-infinite rows
                             const contentGrid = items[currentContentItem].parentElement;
@@ -1569,10 +1630,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize content item listeners
     addContentItemListeners();
 
-    // Auto-replace Continue Watching row with large 16:9 tiles
-    setTimeout(() => {
-        replaceContinueWatchingWithLargeTiles();
-    }, 1000); // Wait 1 second for page to fully load
+    // Note: Auto-replacement of Continue Watching row disabled to keep progress bars visible
+    // setTimeout(() => {
+    //     replaceContinueWatchingWithLargeTiles();
+    // }, 1000); // Wait 1 second for page to fully load
 
     // Add smooth scrolling for content area
     function smoothScroll(element, to, duration) {

@@ -529,6 +529,43 @@ body {
     display: none !important;
 }
 
+/* Ensure progress bars are ALWAYS visible in continue watching tiles */
+.continue-watching-row .progress-bar-container,
+.continue-watching-row .tile-component .progress-bar-container,
+.continue-watching-row .content-item .progress-bar-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.continue-watching-row .progress-bar,
+.continue-watching-row .tile-component .progress-bar,
+.continue-watching-row .content-item .progress-bar {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Enhanced focus styles specifically for continue watching tiles */
+.continue-watching-row .tile-component.focused,
+.continue-watching-row .content-item.focused {
+    border: 4px solid #FFFFFF !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+    z-index: 20 !important;
+    position: relative !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.5) !important;
+    outline: none !important;
+    transform: scale(1.02) !important;
+}
+
+/* Ensure focus ring is visible even with progress bars */
+.continue-watching-row .tile-component.focused .progress-bar-container,
+.continue-watching-row .content-item.focused .progress-bar-container {
+    bottom: 0 !important;
+    z-index: 5 !important;
+}
+
 /* Live Badge Styles */
 .live-badge {
     position: absolute;
